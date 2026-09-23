@@ -1,0 +1,42 @@
+{% extends base_template %}
+
+{% block title %}{{ page_heading }} - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>{{ page_heading }}</h1>
+        <p>{{ page_intro }}</p>
+    </div>
+
+    <a href="{{ back_url }}" class="dashboard-filter-reset dashboard-inline-action">{{ back_label }}</a>
+</div>
+
+<section class="dashboard-stats">
+    {% for card in summary_cards %}
+    <article class="stat-card">
+        <h3>{{ card.label }}</h3>
+        <p class="stat-number">{{ card.value }}</p>
+    </article>
+    {% endfor %}
+</section>
+
+<section class="dashboard-record-layout">
+    {% for section in detail_sections %}
+    <article class="dashboard-panel dashboard-record-panel">
+        <div class="dashboard-panel-header">
+            <h2>{{ section.title }}</h2>
+        </div>
+
+        <dl class="dashboard-record-grid">
+            {% for field in section.fields %}
+            <div class="dashboard-record-item">
+                <dt>{{ field.label }}</dt>
+                <dd>{{ field.value }}</dd>
+            </div>
+            {% endfor %}
+        </dl>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}

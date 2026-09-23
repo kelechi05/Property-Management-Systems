@@ -1,0 +1,90 @@
+{% extends 'dashboard/staff_base.html' %}
+{% block title %}Managed Tenants - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Managed Tenants</h1>
+        <p>Browse tenants under your management and filter them by landlord.</p>
+    </div>
+
+    <a href="{% url 'accounts:staff-tenant-create' %}" class="dashboard-primary-btn dashboard-inline-action">Add Tenant</a>
+</div>
+
+<section class="dashboard-panel dashboard-panel--tenant-directory">
+    <div class="dashboard-panel-header">
+        <h2>Tenant Directory</h2>
+        <span class="pill">{{ managed_tenants_count }}</span>
+    </div>
+
+    <form method="get" class="dashboard-filter-bar">
+        <label for="landlord" class="dashboard-filter-label">Filter by landlord</label>
+        <select name="landlord" id="landlord" class="dashboard-filter-select">
+            <option value="">All landlords</option>
+            {% for landlord in landlord_options %}
+            <option value="{{ landlord.pk }}"{% if selected_landlord_id == landlord.pk|stringformat:"s" %} selected{% endif %}>
+                {{ landlord.user.username|default:landlord.user.email }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label for="property" class="dashboard-filter-label">Filter by property</label>
+        <select name="property" id="property" class="dashboard-filter-select">
+            <option value="">All properties</option>
+            {% for property in property_options %}
+            <option value="{{ property.pk }}"{% if selected_property_id == property.pk|stringformat:"s" %} selected{% endif %}>
+                {{ property.property_name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Apply</button>
+            <a href="{% url 'accounts:staff-tenant-list' %}" class="dashboard-filter-reset">Reset</a>
+        </div>
+    </form>
+
+    <div class="dashboard-table-wrap dashboard-table-wrap--tenant-directory">
+        <table class="dashboard-table dashboard-table--tenant-directory">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Landlord</th>
+                    <th>Property Name</th>
+                    <th>Apartment</th>
+                    <th>Tenancy Type</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Payment Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tenant in managed_tenants %}
+                <tr class="dashboard-table-row-link" data-href="{% url 'accounts:staff-tenant-detail' tenant.pk %}" tabindex="0" role="link" aria-label="Open tenant record for {{ tenant.name }}">
+                    <td>{{ tenant.name }}</td>
+                    <td>{{ tenant.landlord_name|default:"Not assigned" }}</td>
+                    <td>{{ tenant.property_name_display|default:"Not assigned" }}</td>
+                    <td>{{ tenant.apartment_type }}</td>
+                    <td>{{ tenant.get_tenancy_type_display }}</td>
+                    <td>{{ tenant.phone_number }}</td>
+                    <td>{{ tenant.email }}</td>
+                    <td>{{ tenant.payment_amount }}</td>
+                    <td><a href="{% url 'accounts:staff-tenant-update' tenant.pk %}" class="pill" data-row-link-ignore>Edit</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="dashboard-table-empty">
+                        {% if selected_landlord %}
+                        No tenants are assigned under {{ selected_landlord.user.username|default:selected_landlord.user.email }}.
+                        {% else %}
+                        No tenants are assigned to your account yet.
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

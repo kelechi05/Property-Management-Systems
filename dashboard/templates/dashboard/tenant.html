@@ -1,0 +1,137 @@
+{% extends 'dashboard/tenant_base.html' %}
+{% block title %}Tenant Dashboard - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Tenant Home Dashboard</h1>
+        <p>See your rent status, maintenance requests, lease details, and important updates for your unit.</p>
+    </div>
+
+    <div class="dashboard-header-actions">
+        <div
+            class="notification-center"
+            data-notification-center
+            data-mark-seen-url="{% url 'dashboard:notifications_mark_seen' %}"
+        >
+            <a href="{{ dashboard_notification_bell_url }}" class="notification-bell" aria-label="Open maintenance notifications">
+                <span class="notification-bell-icon">&#128276;</span>
+                {% if dashboard_notification_count %}
+                <span class="notification-bell-count" data-notification-count>{{ dashboard_notification_count }}</span>
+                {% endif %}
+            </a>
+            <div class="notification-dropdown">
+                <div class="notification-dropdown-header">
+                    <h2>Notifications</h2>
+                    <span class="pill">{{ dashboard_notification_count }}</span>
+                </div>
+                <div class="notification-dropdown-list">
+                    {% for item in dashboard_notification_items %}
+                    <a href="{{ item.url }}" class="notification-dropdown-item{% if item.is_unread %} is-unread{% endif %}" data-notification-item data-notification-key="{{ item.key }}">
+                        <span class="pill">{{ item.category }}</span>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.meta }}</p>
+                        <p class="notification-dropdown-detail-copy">{{ item.detail }}</p>
+                    </a>
+                    {% empty %}
+                    <p class="notification-dropdown-empty">No current notifications.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'account_logout' %}" class="dashboard-signout-form">
+            {% csrf_token %}
+            <button type="submit" class="dashboard-signout-btn">Sign Out</button>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-stats dashboard-stats--four">
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Current Rent</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ current_rent }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Lease Status</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{% if tenant_record %}Active{% else %}Pending{% endif %}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Payments</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ payment_history|length }}</p>
+        </div>
+    </div>
+    <a href="{% url 'maintenance:tenant-list' %}" class="stat-card stat-card-link">
+        <div class="stat-card-label">
+            <h3>Maintenance Reports</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ maintenance_report_count }}</p>
+        </div>
+    </a>
+</div>
+
+<div class="dashboard-panel-grid">
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Your Account</h2>
+            <span class="pill">Tenant</span>
+        </div>
+        <div class="dashboard-list">
+            <article class="dashboard-list-item">
+                <h3>Rent & Payments</h3>
+                <p>Review due amounts, payment history, and upcoming billing activity.</p>
+            </article>
+            <article class="dashboard-list-item">
+                <h3>Maintenance Support</h3>
+                <p>Track existing issues and submit new repair or service requests.</p>
+            </article>
+            <article class="dashboard-list-item">
+                <h3>Lease Information</h3>
+                <p>Keep your lease dates, property details, and tenancy documents in view.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Quick Actions</h2>
+            <span class="pill">Resident</span>
+        </div>
+        <div class="dashboard-action-grid">
+            <a href="{% url 'dashboard:tenant-payments' %}" class="dashboard-action-card">
+                <h3>View Payments</h3>
+                <p>Open your payment report and review current charges.</p>
+            </a>
+            <a href="{% url 'maintenance:tenant-create' %}" class="dashboard-action-card">
+                <h3>Request Repair</h3>
+                <p>Submit a maintenance issue for follow-up.</p>
+            </a>
+            <a href="{% url 'maintenance:tenant-list' %}" class="dashboard-action-card">
+                <h3>Track Repairs</h3>
+                <p>Check the current maintenance status of your complaints.</p>
+            </a>
+            <a href="#" class="dashboard-action-card">
+                <h3>View Lease</h3>
+                <p>Check tenancy dates and agreement details.</p>
+            </a>
+            <a href="#" class="dashboard-action-card">
+                <h3>Contact Support</h3>
+                <p>Reach management about your unit or account.</p>
+            </a>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

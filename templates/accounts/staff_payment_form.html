@@ -1,0 +1,17 @@
+{% extends 'dashboard/staff_base.html' %}
+
+{% block title %}{{ form_title|default:"Add Payment" }}{% endblock %}
+
+{% block dashboard_content %}
+<section>
+    <span class="pill">Staff</span>
+    <h1>{{ form_title|default:"Add Payment" }}</h1>
+    <p>{{ form_intro|default:"Record a payment for one of the tenants and properties assigned to your staff account." }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form_mode == 'edit' %}Update Payment{% else %}Save Payment{% endif %}</button>
+    </form>
+</section>
+{% endblock %}

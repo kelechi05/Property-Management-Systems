@@ -1,0 +1,61 @@
+{% extends 'dashboard/landlord_base.html' %}
+{% block title %}Payment Report - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Payment Report</h1>
+        <p>Track every recorded payment across your properties and tenants.</p>
+    </div>
+</div>
+
+<div class="dashboard-stats">
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Payment Records</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ payment_report_count }}</p>
+        </div>
+    </div>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Payments</h2>
+        <span class="pill">{{ payment_report_count }}</span>
+    </div>
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>Property</th>
+                    <th>Status</th>
+                    <th>Amount To Pay</th>
+                    <th>Due Date</th>
+                    <th>Payment Date</th>
+                    <th>Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payment_report %}
+                <tr class="dashboard-table-row-link" data-href="{% url 'dashboard:landlord-payment-detail' payment.pk %}" tabindex="0" role="link" aria-label="Open payment record {{ payment.pk }} for {{ payment.tenant_name }}">
+                    <td>{{ payment.tenant_name }}</td>
+                    <td>{{ payment.property }}</td>
+                    <td>{{ payment.get_status_display }}</td>
+                    <td>{{ payment.amount_to_pay }}</td>
+                    <td>{{ payment.due_date }}</td>
+                    <td>{{ payment.payment_date|default:"-" }}</td>
+                    <td>{{ payment.get_payment_method_display }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="dashboard-table-empty">No payment records are available for your properties yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

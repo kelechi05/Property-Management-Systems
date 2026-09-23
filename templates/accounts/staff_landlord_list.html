@@ -1,0 +1,57 @@
+{% extends 'dashboard/staff_base.html' %}
+{% block title %}Managed Landlords - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Managed Landlords</h1>
+        <p>View every landlord assigned to your staff account and the properties attached to each one.</p>
+    </div>
+
+    <a href="{% url 'accounts:staff-landlord-create' %}" class="dashboard-primary-btn dashboard-inline-action">Add Landlord</a>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Landlord Directory</h2>
+        <span class="pill">{{ managed_landlords_count }}</span>
+    </div>
+
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Property Name</th>
+                    <th>Property Type</th>
+                    <th>Number of Units</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Commission %</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in managed_landlords %}
+                <tr class="dashboard-table-row-link" data-href="{% url 'accounts:staff-landlord-detail' row.landlord.pk %}" tabindex="0" role="link" aria-label="Open landlord record for {{ row.landlord.user.username|default:row.landlord.user.email }}">
+                    <td>{{ row.landlord.user.username|default:row.landlord.user.email }}</td>
+                    <td>{{ row.property_name }}</td>
+                    <td>{{ row.property_type }}</td>
+                    <td>{{ row.number_of_units }}</td>
+                    <td>{{ row.landlord.email|default:row.landlord.user.email|default:"Not provided" }}</td>
+                    <td>{{ row.landlord.phone_number|default:"Not provided" }}</td>
+                    <td>{{ row.property_address|default:"Not provided" }}</td>
+                    <td>{{ row.landlord.commission_percentage }}%</td>
+                    <td><a href="{% url 'accounts:staff-landlord-update' row.landlord.pk %}" class="pill" data-row-link-ignore>Edit</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="dashboard-table-empty">No landlords are assigned to your account yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

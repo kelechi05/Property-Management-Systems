@@ -1,0 +1,274 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ report_title }} - Property Management{% endblock %}
+
+{% block dashboard_sidebar %}
+{% if request.user.profile.role == 'landlord' %}
+<div class="sidebar-profile">
+    <div class="sidebar-profile-avatar" aria-hidden="true">
+        {{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}
+    </div>
+</div>
+<div class="sidebar-profile-copy">
+    <p class="sidebar-profile-greeting">Welcome back, {{ request.user.get_full_name|default:request.user.username }}</p>
+</div>
+<nav class="sidebar-nav">
+    <ul>
+        <li><a href="{% url 'dashboard:landlord' %}">Dashboard</a></li>
+        <li><a href="{% url 'accounts:landlord-property-list' %}">Properties</a></li>
+        <li><a href="{% url 'accounts:landlord-tenant-list' %}">Tenants</a></li>
+        <li><a href="{% url 'dashboard:landlord-payments' %}">Payments</a></li>
+        <li class="sidebar-dropdown-item">
+            <details class="sidebar-dropdown" open>
+                <summary>Reports</summary>
+                <ul class="sidebar-dropdown-menu">
+                    <li><a href="{% url 'dashboard:landlord-report' report_type='financial' %}">Financial Report</a></li>
+                    <li><a href="{% url 'dashboard:landlord-report' report_type='payment' %}">Payment Report</a></li>
+                    <li><a href="{% url 'dashboard:landlord-report' report_type='occupancy' %}">Occupancy Report</a></li>
+                    <li><a href="{% url 'dashboard:landlord-report' report_type='maintenance' %}">Maintenance Report</a></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+</nav>
+{% else %}
+<div class="sidebar-profile">
+    <div class="sidebar-profile-avatar" aria-hidden="true">
+        {{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}
+    </div>
+</div>
+<div class="sidebar-profile-copy">
+      <p class="sidebar-profile-greeting">Welcome back, {{ request.user.get_full_name|default:request.user.username }}</p>
+</div>
+<nav class="sidebar-nav">
+    <ul>
+        <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+        <li><a href="{% url 'accounts:staff-tenant-list' %}">Tenants</a></li>
+        <li><a href="{% url 'accounts:staff-landlord-list' %}">Landlords</a></li>
+        <li><a href="{% url 'accounts:staff-payment-list' %}">Payments</a></li>
+        <li class="sidebar-dropdown-item">
+            <details class="sidebar-dropdown">
+                <summary>Task</summary>
+                <ul class="sidebar-dropdown-menu">
+                    <li><a href="{% url 'accounts:staff-landlord-create' %}">Add Landlord</a></li>
+                    <li><a href="{% url 'accounts:staff-tenant-create' %}">Add Tenant</a></li>
+                    <li><a href="{% url 'accounts:staff-payment-create' %}">Add Payment</a></li>
+                    <li><a href="{% url 'accounts:staff-property-create' %}">Add Property</a></li>
+                    <li><a href="{% url 'maintenance:staff-list' %}">Update Maintenance</a></li>
+                    <li><a href="{% url 'maintenance:staff-create' %}">Log Maintenance</a></li>
+                </ul>
+            </details>
+        </li>
+        <li class="sidebar-dropdown-item">
+            <details class="sidebar-dropdown" open>
+                <summary>Reports</summary>
+                <ul class="sidebar-dropdown-menu">
+                    <li><a href="{% url 'dashboard:staff-report' report_type='financial' %}">Financial Report</a></li>
+                    <li><a href="{% url 'dashboard:staff-report' report_type='payment' %}">Payment Report</a></li>
+                    <li><a href="{% url 'dashboard:staff-report' report_type='occupancy' %}">Occupancy Report</a></li>
+                    <li><a href="{% url 'dashboard:staff-report' report_type='maintenance' %}">Maintenance Report</a></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>{{ report_title }}</h1>
+        <p>{{ report_intro }}</p>
+    </div>
+</div>
+
+<div class="dashboard-stats">
+    {% for card in report_summary_cards %}
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>{{ card.label }}</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ card.value }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <div>
+            <h2>{{ report_title }}</h2>
+            <span class="pill">{{ report_key|title }}</span>
+        </div>
+        {% if report_key == 'financial' %}
+        <div class="export-buttons">
+            <a href="{% if request.user.profile.role == 'staff' %}{% url 'dashboard:staff-report-export' report_type=report_key export_format='pdf' %}{% else %}{% url 'dashboard:landlord-report-export' report_type=report_key export_format='pdf' %}{% endif %}?{{ request.GET.urlencode }}" class="export-button export-button-pdf" title="Export to PDF">
+                <span>📄 PDF</span>
+            </a>
+            <a href="{% if request.user.profile.role == 'staff' %}{% url 'dashboard:staff-report-export' report_type=report_key export_format='excel' %}{% else %}{% url 'dashboard:landlord-report-export' report_type=report_key export_format='excel' %}{% endif %}?{{ request.GET.urlencode }}" class="export-button export-button-excel" title="Export to Excel">
+                <span>📊 Excel</span>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if report_key == 'financial' %}
+    <form method="get" class="dashboard-report-filter">
+        <div class="dashboard-filter-grid">
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-start-date">Start Date</label>
+                <input id="report-start-date" class="dashboard-filter-select" type="date" name="start_date" value="{{ financial_filter_values.start_date }}">
+            </div>
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-end-date">End Date</label>
+                <input id="report-end-date" class="dashboard-filter-select" type="date" name="end_date" value="{{ financial_filter_values.end_date }}">
+            </div>
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-property">Property</label>
+                <select id="report-property" class="dashboard-filter-select" name="property">
+                    <option value="">All Properties</option>
+                    {% for property in financial_properties %}
+                    <option value="{{ property.id }}" {% if financial_filter_values.property|stringformat:"s" == property.id|stringformat:"s" %}selected{% endif %}>
+                        {{ property.property_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-status">Status</label>
+                <select id="report-status" class="dashboard-filter-select" name="status">
+                    <option value="">All Statuses</option>
+                    {% for status_value, status_label in financial_status_choices %}
+                    <option value="{{ status_value }}" {% if financial_filter_values.status == status_value %}selected{% endif %}>
+                        {{ status_label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Apply Filter</button>
+            <a href="?" class="dashboard-filter-reset">Reset</a>
+        </div>
+    </form>
+
+    {% if financial_active_filters %}
+    <div class="dashboard-filter-feedback">
+        {% for active_filter in financial_active_filters %}
+        <span class="pill">{{ active_filter }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% elif report_key == 'payment' %}
+    <form method="get" class="dashboard-report-filter">
+        <div class="dashboard-filter-grid">
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-payment-start-date">Start Date</label>
+                <input id="report-payment-start-date" class="dashboard-filter-select" type="date" name="start_date" value="{{ payment_filter_values.start_date }}">
+            </div>
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-payment-end-date">End Date</label>
+                <input id="report-payment-end-date" class="dashboard-filter-select" type="date" name="end_date" value="{{ payment_filter_values.end_date }}">
+            </div>
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-payment-property">Property</label>
+                <select id="report-payment-property" class="dashboard-filter-select" name="property">
+                    <option value="">All Properties</option>
+                    {% for property in payment_properties %}
+                    <option value="{{ property.id }}" {% if payment_filter_values.property|stringformat:"s" == property.id|stringformat:"s" %}selected{% endif %}>
+                        {{ property.property_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Apply Filter</button>
+            <a href="?" class="dashboard-filter-reset">Reset</a>
+        </div>
+    </form>
+
+    {% if payment_active_filters %}
+    <div class="dashboard-filter-feedback">
+        {% for active_filter in payment_active_filters %}
+        <span class="pill">{{ active_filter }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% elif report_key == 'occupancy' %}
+    <form method="get" class="dashboard-report-filter">
+        <div class="dashboard-filter-grid">
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-landlord">Landlord</label>
+                <select id="report-landlord" class="dashboard-filter-select" name="landlord">
+                    <option value="">All Landlords</option>
+                    {% for landlord in occupancy_landlords %}
+                    <option value="{{ landlord.id }}" {% if occupancy_filter_values.landlord|stringformat:"s" == landlord.id|stringformat:"s" %}selected{% endif %}>
+                        {{ landlord.user.username|default:landlord.user.email }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="dashboard-field">
+                <label class="dashboard-filter-label" for="report-occupancy-property">Property</label>
+                <select id="report-occupancy-property" class="dashboard-filter-select" name="property">
+                    <option value="">All Properties</option>
+                    {% for property in occupancy_properties %}
+                    <option value="{{ property.id }}" {% if occupancy_filter_values.property|stringformat:"s" == property.id|stringformat:"s" %}selected{% endif %}>
+                        {{ property.property_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Apply Filter</button>
+            <a href="?" class="dashboard-filter-reset">Reset</a>
+        </div>
+    </form>
+
+    {% if occupancy_active_filters %}
+    <div class="dashboard-filter-feedback">
+        {% for active_filter in occupancy_active_filters %}
+        <span class="pill">{{ active_filter }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% if report_headers %}
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    {% for header in report_headers %}
+                    <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in report_rows %}
+                <tr>
+                    {% for cell in row %}
+                    <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{{ report_headers|length }}" class="dashboard-table-empty">{{ report_empty_message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="dashboard-list">
+        <article class="dashboard-list-item">
+            <h3>Maintenance Module Pending</h3>
+            <p>{{ report_empty_message }}</p>
+        </article>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

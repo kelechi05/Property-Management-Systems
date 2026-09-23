@@ -1,0 +1,44 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_sidebar %}
+<div class="sidebar-profile">
+    <div class="sidebar-profile-avatar" aria-hidden="true">
+        {{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}
+    </div>
+</div>
+<div class="sidebar-profile-copy">
+      <p class="sidebar-profile-greeting">Welcome back, {{ request.user.get_full_name|default:request.user.username }}</p>
+</div>
+<nav class="sidebar-nav">
+    <ul>
+        <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+        <li><a href="{% url 'accounts:staff-tenant-list' %}">Tenants</a></li>
+        <li><a href="{% url 'accounts:staff-landlord-list' %}">Landlords</a></li>
+        <li><a href="{% url 'accounts:staff-payment-list' %}">Payments</a></li>
+        <li class="sidebar-dropdown-item">
+            <details class="sidebar-dropdown">
+                <summary>Task</summary>
+                <ul class="sidebar-dropdown-menu">
+                    <li><a href="{% url 'accounts:staff-landlord-create' %}">Add Landlord</a></li>
+                    <li><a href="{% url 'accounts:staff-tenant-create' %}">Add Tenant</a></li>
+                    <li><a href="{% url 'accounts:staff-payment-create' %}">Add Payment</a></li>
+                    <li><a href="{% url 'accounts:staff-property-create' %}">Add Property</a></li>
+                    <li><a href="{% url 'maintenance:staff-list' %}">Update Maintenance</a></li>
+                    <li><a href="{% url 'maintenance:staff-create' %}">Log Maintenance</a></li>
+                </ul>
+            </details>
+        </li>
+        <li class="sidebar-dropdown-item">
+            <details class="sidebar-dropdown">
+                <summary>Reports</summary>
+                <ul class="sidebar-dropdown-menu">
+                    <li><a href="{% url 'dashboard:staff-report' report_type='financial' %}">Financial Report</a></li>
+                    <li><a href="{% url 'dashboard:staff-report' report_type='payment' %}">Payment Report</a></li>
+                    <li><a href="{% url 'dashboard:staff-report' report_type='occupancy' %}">Occupancy Report</a></li>
+                    <li><a href="{% url 'dashboard:staff-report' report_type='maintenance' %}">Maintenance Report</a></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+</nav>
+{% endblock %}

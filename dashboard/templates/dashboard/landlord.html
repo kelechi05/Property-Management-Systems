@@ -1,0 +1,173 @@
+{% extends 'dashboard/landlord_base.html' %}
+{% block title %}Landlord Dashboard - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Landlord Portfolio Dashboard</h1>
+        <p>Track your units, occupancy, rental income, and operational performance across the portfolio.</p>
+    </div>
+
+    <div class="dashboard-header-actions">
+        <div
+            class="notification-center"
+            data-notification-center
+            data-mark-seen-url="{% url 'dashboard:notifications_mark_seen' %}"
+        >
+            <a href="{{ dashboard_notification_bell_url }}" class="notification-bell" aria-label="Open maintenance notifications">
+                <span class="notification-bell-icon">&#128276;</span>
+                {% if dashboard_notification_count %}
+                <span class="notification-bell-count" data-notification-count>{{ dashboard_notification_count }}</span>
+                {% endif %}
+            </a>
+            <div class="notification-dropdown">
+                <div class="notification-dropdown-header">
+                    <h2>Notifications</h2>
+                    <span class="pill">{{ dashboard_notification_count }}</span>
+                </div>
+                <div class="notification-dropdown-list">
+                    {% for item in dashboard_notification_items %}
+                    <a href="{{ item.url }}" class="notification-dropdown-item{% if item.is_unread %} is-unread{% endif %}" data-notification-item data-notification-key="{{ item.key }}">
+                        <span class="pill">{{ item.category }}</span>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.meta }}</p>
+                        <p class="notification-dropdown-detail-copy">{{ item.detail }}</p>
+                    </a>
+                    {% empty %}
+                    <p class="notification-dropdown-empty">No current notifications.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'account_logout' %}" class="dashboard-signout-form">
+            {% csrf_token %}
+            <button type="submit" class="dashboard-signout-btn">Sign Out</button>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-stats dashboard-stats--four">
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Total Properties</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ total_properties_count }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Occupied Units</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ occupied_units_count }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Outstanding Rent</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ outstanding_rent }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Payment Records</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ payments_count }}</p>
+        </div>
+    </div>
+    <a href="{% url 'maintenance:landlord-list' %}" class="stat-card stat-card-link">
+        <div class="stat-card-label">
+            <h3>Maintenance Reports</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ maintenance_report_count }}</p>
+        </div>
+    </a>
+</div>
+
+<div class="dashboard-panel-grid">
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Portfolio Focus</h2>
+            <span class="pill">Landlord</span>
+        </div>
+        <div class="dashboard-list">
+            <article class="dashboard-list-item">
+                <h3>Vacancy Monitoring</h3>
+                <p>Watch vacant units, listing activity, and upcoming lease expirations.</p>
+            </article>
+            <article class="dashboard-list-item">
+                <h3>Rent Performance</h3>
+                <p>Check collections, outstanding balances, and expected monthly cash flow.</p>
+            </article>
+            <article class="dashboard-list-item">
+                <h3>Property Condition</h3>
+                <p>Review maintenance trends and prioritize capital or routine work.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Quick Actions</h2>
+            <span class="pill">Portfolio</span>
+        </div>
+        <div class="dashboard-action-grid">
+            <a href="{% url 'accounts:landlord-property-list' %}" class="dashboard-action-card">
+                <h3>View Properties</h3>
+                <p>Open the property list and review unit status.</p>
+            </a>
+            <a href="{% url 'accounts:landlord-tenant-list' %}" class="dashboard-action-card">
+                <h3>Check Tenants</h3>
+                <p>See current occupants and lease commitments.</p>
+            </a>
+            <a href="{% url 'dashboard:landlord-payments' %}" class="dashboard-action-card">
+                <h3>Review Payments</h3>
+                <p>Monitor incoming rent and overdue accounts.</p>
+            </a>
+            <a href="{% url 'maintenance:landlord-list' %}" class="dashboard-action-card">
+                <h3>Open Maintenance</h3>
+                <p>Review complaints, repair progress, and maintenance costs.</p>
+            </a>
+        </div>
+    </section>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Recent Payments</h2>
+        <a href="{% url 'dashboard:landlord-payments' %}" class="pill">View all</a>
+    </div>
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>Property</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in recent_payments %}
+                <tr>
+                    <td>{{ payment.tenant_name }}</td>
+                    <td>{{ payment.property_name }}</td>
+                    <td>{{ payment.get_status_display }}</td>
+                    <td>{{ payment.due_date }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="dashboard-table-empty">No payment records are available yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

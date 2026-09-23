@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Home - Property Management{% endblock %}
+
+{% block content %}
+<section class="hero-slider">
+    <div class="slider-container">
+        {% for slide in hero_slides %}
+        <div class="slide{% if forloop.first %} active{% endif %}">
+            <img class="slide-image" src="{{ slide.background_image.url }}" alt="{{ slide.headline }}">
+            <div class="slide-content">
+                <h1>{{ slide.headline }}</h1>
+                <p>{{ slide.blurb }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="slide active">
+            <div class="slide-content">
+                <h1>Welcome to Our Property Management Service</h1>
+                <p>Professional property management solutions for landlords and property owners</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if hero_slides|length > 1 %}
+    <div class="slider-controls">
+        <button class="prev-btn" onclick="prevSlide()">&#10094;</button>
+        <button class="next-btn" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <div class="slider-dots">
+        {% for slide in hero_slides %}
+        <span class="dot" onclick="currentSlide({{ forloop.counter }})"></span>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>
+
+<section class="welcome-note">
+    <div class="welcome-text">
+        <h1>We Create,</h1>
+        <h3>A new standard — built on trust, transparency, and confidence.</h3>
+        <p>We restore confidence in property management services through secure, transparent, and professional services delivered with integrity and excellence.</p>
+        <p>Our goal is to build a realistic environment where individuals, families, and investors can make property decisions with confidence and peace of mind. Through innovation, accountability, and customer-focused service, we help turn property dreams into lasting investments while contributing to sustainable community growth.</p>
+        <p>Your future property starts with trust — and trust starts here.</p>
+    </div>
+    <div class="welcome-image" role="img" aria-label="Property management illustration"><img src="static\img\pexels-mrpugo-33050276-removebg-preview.png" alt="Property management illustration" ></div>
+</section>
+
+<section class="features">
+    <h2>Our Services</h2>
+    <div class="feature-grid">
+        {% for service in services %}
+        <div class="feature-card">
+            <div class="feature-image" role="img" aria-label="{{ service.title }}" style="background-image: url('{{ service.home_image.url }}');">
+                <h1>{{ service.title }}</h1>
+            </div>
+            <div class="feature-overlay">
+                
+                <p>{{ service.description|truncatewords_html:15|safe }}</p>
+                <a href="{% url 'website:services' %}">Read more</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="feature-card feature-card-empty">
+            <div class="feature-overlay feature-overlay-static">
+                <h2>No services available</h2>
+                <p>Add services in the admin panel to display them here.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="full-bleed-section">
+    <div class="full-bleed-content">
+        <div class="full-bleed-copy">
+           <h2>Everything your property needs, managed with clarity.</h2>
+            <div class="divider">
+                <img src="static\img\PNG LAND SCAPE-01.png" alt="Property management illustration" width="200" height="100"> 
+            </div>
+            <p class="section-kicker"> Management without the chaos</p>
+        </div>
+        <div class="full-bleed-grid">
+            <article class="full-bleed-card">
+                <p>Fast communication, clear updates, and dependable follow-through for every maintenance or leasing need.</p>
+                <ul>
+                    <li>Responsive support</li>
+                    <li>Transparent Reporting</li>
+                    <li>Proactive Care</li>
+
+                </ul>
+           </article>
+        </div>
+    </div>
+</section>
+
+<section class="info-duo plain-section">
+    <div class="info-block primary">
+        <h2>Our Vision</h2>
+        <p>To restore trust, confidence, and transparency in the land and property business by delivering reliable real estate solutions that empower individuals, families, and investors to own and manage property with peace of mind.</p>
+    </div>
+    <div class="info-block neutral">
+        <h2>Our Mission</h2>
+        <p>Our mission is to provide honest, professional, and customer-focused land and property services through integrity, transparency, innovation, and excellence. We are committed to helping clients
+        make secure property decisions, building lasting relationships, and contributing to sustainable community development.</p>
+    </div>
+</section>
+
+<section class="plain-section listings">
+    <h1 class="listings-title">Featured Listings</h1>
+    <div class="listing-grid">
+        {% for listing in listings %}
+        <div class="listing-card">
+            <div class="listing-image" role="img" aria-label="{{ listing.apartment_type }}" style="background-image: url('{{ listing.image.url }}');"></div>
+            <h3>{{ listing.apartment_type }}</h3>
+            <div class="listing-meta">
+                <p class="price">${{ listing.price }}</p>
+                <a class="details-link" href="{% url 'website:property-detail' listing.pk %}">Details</a>
+            </div>
+            <p class="summary">{{ listing.description }}</p>
+            <p class="location">{{ listing.location }}</p>
+        </div>
+        {% empty %}
+        <div class="listing-card listing-card-empty">
+            <p class="summary">No listings are available yet. Add some in the admin panel to show them here.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

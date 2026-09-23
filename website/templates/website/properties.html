@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Properties - Property Management{% endblock %}
+
+{% block content %}
+<section class="hero properties-hero"{% if service and service.services_image %} style="background-image: url('{{ service.services_image.url }}');"{% endif %}>
+    <h1>Available Properties</h1>
+    <p>Browse approved listings and open each property to view the full details captured in the model.</p>
+</section>
+
+<section class="plain-section listings">
+    <div class="listing-grid">
+        {% for listing in listings %}
+        <article class="listing-card">
+            <div class="listing-image" role="img" aria-label="{{ listing.apartment_type }}" style="background-image: url('{{ listing.image.url }}');"></div>
+            <h3>{{ listing.apartment_type }}</h3>
+            <div class="listing-meta">
+                <p class="price">${{ listing.price }}</p>
+                <a class="details-link" href="{% url 'website:property-detail' listing.pk %}">View Details</a>
+            </div>
+            <p class="summary">{{ listing.description|truncatewords:18 }}</p>
+            <p class="location">{{ listing.location }}</p>
+        </article>
+        {% empty %}
+        <div class="listing-card listing-card-empty">
+            <p class="summary">No approved properties are available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

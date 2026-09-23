@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block title %}{% trans "Confirm Email Address" %} - Property Management{% endblock %}
+
+{% block main_class %}auth-container{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-badge">{% trans "Email Verification" %}</div>
+    <h1 class="auth-title">{% trans "Confirm Email Address" %}</h1>
+    <p class="auth-subtitle">{% trans "Verify your email so your account can be fully activated and secured." %}</p>
+  </div>
+
+  {% if confirmation %}
+    {% user_display confirmation.email_address.user as user_display %}
+    {% if can_confirm %}
+      <p class="auth-copy">
+        {% blocktrans with confirmation.email_address.email as email %}
+        Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is the email address for your account.
+        {% endblocktrans %}
+      </p>
+
+      <form method="post" action="{% url 'account_confirm_email' confirmation.key %}" class="auth-form">
+        {% csrf_token %}
+        {{ redirect_field }}
+        <div class="auth-actions">
+          <button type="submit" class="auth-button">{% trans "Confirm Email" %}</button>
+          <a href="{% url 'account_login' %}" class="auth-button auth-button--secondary">{% trans "Back to Sign In" %}</a>
+        </div>
+      </form>
+    {% else %}
+      <p class="auth-copy">
+        {% blocktrans with confirmation.email_address.email as email %}
+        This email address, <a href="mailto:{{ email }}">{{ email }}</a>, is already confirmed by another account.
+        {% endblocktrans %}
+      </p>
+
+      <div class="auth-actions">
+        <a href="{% url 'account_login' %}" class="auth-button auth-button--secondary">{% trans "Go to Sign In" %}</a>
+      </div>
+    {% endif %}
+  {% else %}
+    <p class="auth-copy">{% trans "This email confirmation link is invalid or has expired." %}</p>
+    <p class="auth-copy">
+      {% url 'account_email' as email_url %}
+      {% blocktrans %}Please <a href="{{ email_url }}">request a new email confirmation</a> and try again.{% endblocktrans %}
+    </p>
+
+    <div class="auth-actions">
+      <a href="{% url 'account_login' %}" class="auth-button auth-button--secondary">{% trans "Back to Sign In" %}</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

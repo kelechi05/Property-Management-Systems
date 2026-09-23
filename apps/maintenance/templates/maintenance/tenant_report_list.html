@@ -1,0 +1,51 @@
+{% extends 'dashboard/tenant_base.html' %}
+{% block title %}My Maintenance Reports{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>My Maintenance Reports</h1>
+        <p>Track the complaints you have submitted and see their current repair status.</p>
+    </div>
+
+    <a href="{% url 'maintenance:tenant-create' %}" class="dashboard-primary-btn dashboard-inline-action">Submit Report</a>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Maintenance Status</h2>
+        <span class="pill">{{ maintenance_reports_count }}</span>
+    </div>
+
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Property</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Cost</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in maintenance_reports %}
+                <tr>
+                    <td>{{ report.display_label }}</td>
+                    <td>{{ report.property.property_name|default:"Not attached" }}</td>
+                    <td>{{ report.get_priority_display }}</td>
+                    <td>{{ report.get_status_display }}</td>
+                    <td>{{ report.cost|default:"Not set" }}</td>
+                    <td>{{ report.created_at|date:"Y-m-d" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="dashboard-table-empty">You have not submitted any maintenance complaints yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

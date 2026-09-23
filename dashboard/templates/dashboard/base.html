@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+    <aside class="sidebar">
+        {% block dashboard_sidebar %}
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                <li><a href="{% url 'dashboard:user' %}">User</a></li>
+                <li><a href="{% url 'dashboard:staff' %}">Staff</a></li>
+                <li><a href="{% url 'dashboard:landlord' %}">Landlord</a></li>
+                <li><a href="{% url 'dashboard:tenant' %}">Tenant</a></li>
+                <li><a href="#">Properties</a></li>
+                <li><a href="#">Payments</a></li>
+            </ul>
+        </nav>
+        {% endblock %}
+    </aside>
+    
+    <main class="main-content">
+        {% block dashboard_content %}{% endblock %}
+    </main>
+</div>
+{% endblock %}

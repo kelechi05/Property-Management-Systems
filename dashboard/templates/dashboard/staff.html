@@ -1,0 +1,188 @@
+{% extends 'dashboard/staff_base.html' %}
+{% block title %}Staff Dashboard - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Staff Operations Hub</h1>
+        <p>Stay on top of occupancy, maintenance coordination, resident support, and daily property workflows.</p>
+    </div>
+
+    <div class="dashboard-header-actions">
+        <div
+            class="notification-center"
+            data-notification-center
+            data-mark-seen-url="{% url 'dashboard:notifications_mark_seen' %}"
+        >
+            <a href="{{ dashboard_notification_bell_url }}" class="notification-bell" aria-label="Open maintenance notifications">
+                <span class="notification-bell-icon">&#128276;</span>
+                {% if dashboard_notification_count %}
+                <span class="notification-bell-count" data-notification-count>{{ dashboard_notification_count }}</span>
+                {% endif %}
+            </a>
+            <div class="notification-dropdown">
+                <div class="notification-dropdown-header">
+                    <h2>Notifications</h2>
+                    <span class="pill">{{ dashboard_notification_count }}</span>
+                </div>
+                <div class="notification-dropdown-list">
+                    {% for item in dashboard_notification_items %}
+                    <a href="{{ item.url }}" class="notification-dropdown-item{% if item.is_unread %} is-unread{% endif %}" data-notification-item data-notification-key="{{ item.key }}">
+                        <span class="pill">{{ item.category }}</span>
+                        <h3>{{ item.title }}</h3>
+                        <p>{{ item.meta }}</p>
+                        <p class="notification-dropdown-detail-copy">{{ item.detail }}</p>
+                    </a>
+                    {% empty %}
+                    <p class="notification-dropdown-empty">No current notifications.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <form method="post" action="{% url 'account_logout' %}" class="dashboard-signout-form">
+            {% csrf_token %}
+            <button type="submit" class="dashboard-signout-btn">Sign Out</button>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-stats dashboard-stats--four">
+    <a href="{% url 'accounts:staff-landlord-list' %}" class="stat-card stat-card-link">
+        <div class="stat-card-label">
+            <h3>Managed Landlords</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ managed_landlords_count }}</p>
+        </div>
+    </a>
+    <a href="{% url 'accounts:staff-tenant-list' %}" class="stat-card stat-card-link">
+        <div class="stat-card-label">
+            <h3>Managed Tenants</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ managed_tenants_count }}</p>
+        </div>
+    </a>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Managed Properties</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ managed_properties_count }}</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Assigned Records</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ managed_records_count }}</p>
+        </div>
+    </div>
+    <a href="{% url 'accounts:staff-payment-list' %}" class="stat-card stat-card-link">
+        <div class="stat-card-label">
+            <h3>Payments</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ managed_payments_count }}</p>
+        </div>
+    </a>
+    <a href="{% url 'maintenance:staff-list' %}" class="stat-card stat-card-link">
+        <div class="stat-card-label">
+            <h3>Maintenance</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">{{ maintenance_report_count }}</p>
+        </div>
+    </a>
+</div>
+
+<div class="dashboard-panel-grid">
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Daily Priorities</h2>
+            <span class="pill">Staff</span>
+        </div>
+        <div class="dashboard-list">
+            <article class="dashboard-list-item">
+                <h3>Maintenance Queue</h3>
+                <p>Review unresolved work orders and assign vendors or internal follow-up.</p>
+            </article>
+            <article class="dashboard-list-item">
+                <h3>Tenant Support</h3>
+                <p>Track new complaints, application questions, and lease-related requests.</p>
+            </article>
+            <article class="dashboard-list-item">
+                <h3>Site Walkthroughs</h3>
+                <p>Prepare for inspections, document observations, and close completed issues.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Quick Actions</h2>
+            <span class="pill">Workflow</span>
+        </div>
+        <div class="dashboard-action-grid">
+            <a href="{% url 'accounts:staff-landlord-create' %}" class="dashboard-action-card">
+                <h3>Add Landlord</h3>
+                <p>Create a landlord profile and assign it to your staff account.</p>
+            </a>
+            <a href="{% url 'accounts:staff-property-create' %}" class="dashboard-action-card">
+                <h3>Add Property</h3>
+                <p>Create a property record and link it to one of your assigned landlords.</p>
+            </a>
+            <a href="{% url 'accounts:staff-tenant-create' %}" class="dashboard-action-card">
+                <h3>Add Tenant</h3>
+                <p>Create a tenant record and link it to one of your assigned landlords.</p>
+            </a>
+            <a href="{% url 'accounts:staff-payment-create' %}" class="dashboard-action-card">
+                <h3>Add Payment</h3>
+                <p>Record rent payments for the tenants and properties assigned to you.</p>
+            </a>
+            <a href="{% url 'maintenance:staff-create' %}" class="dashboard-action-card">
+                <h3>Log Maintenance</h3>
+                <p>Record a new complaint or repair request and assign follow-up.</p>
+            </a>
+            <a href="{% url 'maintenance:staff-list' %}" class="dashboard-action-card">
+                <h3>Update Status</h3>
+                <p>View maintenance status, cost, and complaints from tenants and staff.</p>
+            </a>
+            <a href="{% url 'accounts:staff-payment-list' %}" class="dashboard-action-card">
+                <h3>View Payments</h3>
+                <p>Review all payment records you can manage from one place.</p>
+            </a>
+        </div>
+    </section>
+</div>
+
+<div class="dashboard-panel-grid dashboard-panel-grid--stacked">
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Managed Landlords</h2>
+            <a href="{% url 'accounts:staff-landlord-list' %}" class="pill">View all</a>
+        </div>
+        <div class="dashboard-list">
+            <article class="dashboard-list-item">
+                <h3>{{ managed_landlords_count }} assigned landlord{{ managed_landlords_count|pluralize }}</h3>
+                <p>Open the landlord listing page to see full contact details for every landlord under your management.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="dashboard-panel">
+        <div class="dashboard-panel-header">
+            <h2>Managed Tenants</h2>
+            <a href="{% url 'accounts:staff-tenant-list' %}" class="pill">View all</a>
+        </div>
+        <div class="dashboard-list">
+            <article class="dashboard-list-item">
+                <h3>{{ managed_tenants_count }} assigned tenant{{ managed_tenants_count|pluralize }}</h3>
+                <p>Open the tenant listing page to browse residents and filter them by landlord when needed.</p>
+            </article>
+        </div>
+    </section>
+</div>
+{% endblock %}

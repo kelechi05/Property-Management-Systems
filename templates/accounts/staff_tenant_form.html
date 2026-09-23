@@ -1,0 +1,18 @@
+{% extends 'dashboard/staff_base.html' %}
+
+{% block title %}Add Tenant{% endblock %}
+
+{% block dashboard_content %}
+<section>
+    <span class="pill">Staff</span>
+    <h1>Add Tenant</h1>
+    <p>Create a tenant record and link it to one of the landlords assigned to you.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Tenant</button>
+    </form>
+    <p><a href="{% url 'accounts:staff-landlord-create' %}">Need to add a landlord first?</a></p>
+</section>
+{% endblock %}

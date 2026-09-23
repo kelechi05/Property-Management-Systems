@@ -1,0 +1,97 @@
+{% extends 'dashboard/staff_base.html' %}
+{% block title %}Managed Payments - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Managed Payments</h1>
+        <p>Review every payment record created for the tenants and landlords under your management.</p>
+    </div>
+
+    <a href="{% url 'accounts:staff-payment-create' %}" class="dashboard-primary-btn dashboard-inline-action">Add Payment</a>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Payment Records</h2>
+        <span class="pill">{{ managed_payments_count }}</span>
+    </div>
+
+    <form method="get" class="dashboard-filter-bar dashboard-filter-bar--compact">
+        <div class="dashboard-field">
+            <label for="id_start_date" class="dashboard-filter-label">Start Date</label>
+            <input type="date" name="start_date" id="id_start_date" class="dashboard-filter-select" value="{{ selected_start_date }}">
+        </div>
+
+        <div class="dashboard-field">
+            <label for="id_end_date" class="dashboard-filter-label">End Date</label>
+            <input type="date" name="end_date" id="id_end_date" class="dashboard-filter-select" value="{{ selected_end_date }}">
+        </div>
+
+        <div class="dashboard-field">
+            <label for="id_landlord" class="dashboard-filter-label">Landlord</label>
+            <select name="landlord" id="id_landlord" class="dashboard-filter-select">
+                <option value="">All landlords</option>
+                {% for landlord in landlord_options %}
+                <option value="{{ landlord.pk }}" {% if selected_landlord_id == landlord.pk|stringformat:"s" %}selected{% endif %}>
+                    {{ landlord.user.username|default:landlord.user.email }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="dashboard-field">
+            <label for="id_property" class="dashboard-filter-label">Property Name</label>
+            <select name="property" id="id_property" class="dashboard-filter-select">
+                <option value="">All properties</option>
+                {% for property in property_options %}
+                <option value="{{ property.pk }}" {% if selected_property_id == property.pk|stringformat:"s" %}selected{% endif %}>
+                    {{ property.property_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Filter</button>
+            <a href="{% url 'accounts:staff-payment-list' %}" class="dashboard-filter-reset">Clear</a>
+        </div>
+    </form>
+
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>Property Name</th>
+                    <th>Status</th>
+                    <th>Amount Paid</th>
+                    <th>Payment Method</th>
+                    <th>Due Date</th>
+                    <th>Recorded By</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in managed_payments %}
+                <tr class="dashboard-table-row-link" data-href="{% url 'accounts:staff-payment-detail' payment.pk %}" tabindex="0" role="link" aria-label="Open payment record for {{ payment.tenant_name }}">
+                    <td>{{ payment.tenant_name }}</td>
+                    <td>{{ payment.property }}</td>
+                    <td>{{ payment.get_status_display }}</td>
+                    <td>{{ payment.amount_to_pay }}</td>
+                    
+                    <td>{{ payment.get_payment_method_display }}</td>
+                    <td>{{ payment.due_date }}</td>
+                    <td>{{ payment.recorded_by.username|default:payment.recorded_by.email|default:"Not recorded" }}</td>
+                    <td><a href="{% url 'accounts:staff-payment-update' payment.pk %}" class="pill" data-row-link-ignore>Edit</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="dashboard-table-empty">No payments have been recorded yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
