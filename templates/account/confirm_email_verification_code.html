@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Email Verification" %} - Property Management{% endblock %}
+
+{% block main_class %}auth-container{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-badge">{% trans "Email Verification" %}</div>
+    <h1 class="auth-title">{% trans "Enter Email Verification Code" %}</h1>
+    <p class="auth-subtitle">{% blocktrans %}We've sent a code to <a href="mailto:{{ email }}">{{ email }}</a>. Enter it below to verify your email address.{% endblocktrans %}</p>
+  </div>
+
+  <form method="post" action="{% url 'account_email_verification_sent' %}" class="auth-form">
+    {% csrf_token %}
+    {% for field in verify_form %}
+      <div class="form-group">
+        {% if field.label %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% endif %}
+        {{ field }}
+        {% if field.errors %}
+          <ul class="errorlist">
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    {% if verify_form.non_field_errors %}
+      <ul class="errorlist">
+        {% for error in verify_form.non_field_errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {{ redirect_field }}
+
+    <div class="auth-actions">
+      <button type="submit" class="auth-button">{% trans "Confirm" %}</button>
+      {% if can_resend %}
+        <button type="submit" name="action" value="resend" class="auth-button auth-button--secondary">{% trans "Request New Code" %}</button>
+      {% endif %}
+      {% if cancel_url %}
+        <a href="{{ cancel_url }}" class="auth-button auth-button--secondary">{% trans "Cancel" %}</a>
+      {% else %}
+        <a href="{% url 'account_login' %}" class="auth-button auth-button--secondary">{% trans "Cancel" %}</a>
+      {% endif %}
+    </div>
+  </form>
+
+  {% if can_change %}
+    <div class="auth-note">
+      <p>{% trans "Need to use a different email address? Enter a new one below." %}</p>
+    </div>
+
+    <form method="post" action="{% url 'account_email_verification_sent' %}" class="auth-form">
+      {% csrf_token %}
+      {% for field in change_form %}
+        <div class="form-group">
+          {% if field.label %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% endif %}
+          {{ field }}
+          {% if field.errors %}
+            <ul class="errorlist">
+              {% for error in field.errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      {{ redirect_field }}
+      <button type="submit" name="action" value="change" class="auth-button">{% trans "Change Email" %}</button>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'dashboard/base.html' %}
+
+{% block dashboard_sidebar %}
+<div class="sidebar-profile">
+    <div class="sidebar-profile-avatar" aria-hidden="true">
+        {{ request.user.get_full_name|default:request.user.username|slice:":1"|upper }}
+    </div>
+</div>
+<div class="sidebar-profile-copy">
+    <p class="sidebar-profile-greeting">Welcome back, {{ request.user.get_full_name|default:request.user.username }}</p>
+</div>
+<nav class="sidebar-nav">
+    <ul>
+        <li><a href="{% url 'dashboard:tenant' %}">Dashboard</a></li>
+        <li><a href="{% url 'dashboard:tenant-payments' %}">Payments</a></li>
+        <li><a href="{% url 'maintenance:tenant-list' %}">Maintenance Reports</a></li>
+    </ul>
+</nav>
+{% endblock %}

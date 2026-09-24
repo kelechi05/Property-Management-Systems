@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign Out" %} - Property Management{% endblock %}
+
+{% block main_class %}auth-container{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-badge">{% trans "Account" %}</div>
+    <h1 class="auth-title">{% trans "Sign Out" %}</h1>
+    <p class="auth-subtitle">{% trans "You are about to end your current session on the property management dashboard." %}</p>
+  </div>
+
+  <p class="auth-copy">{% trans "Are you sure you want to sign out?" %}</p>
+
+  <form method="post" action="{% url 'account_logout' %}" class="auth-form">
+    {% csrf_token %}
+    {{ redirect_field }}
+    <div class="auth-actions">
+      <button type="submit" class="auth-button">{% trans "Sign Out" %}</button>
+      <a href="/" class="auth-button auth-button--secondary">{% trans "Stay Signed In" %}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

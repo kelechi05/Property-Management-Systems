@@ -1,0 +1,16 @@
+{% extends 'dashboard/tenant_base.html' %}
+{% block title %}Submit Maintenance Report{% endblock %}
+
+{% block dashboard_content %}
+<section>
+    <span class="pill">Tenant</span>
+    <h1>Submit Maintenance Report</h1>
+    <p>Describe the issue in your apartment or around the property so staff can follow up quickly.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Report</button>
+    </form>
+</section>
+{% endblock %}

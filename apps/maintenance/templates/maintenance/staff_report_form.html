@@ -1,0 +1,16 @@
+{% extends 'dashboard/staff_base.html' %}
+{% block title %}Create Maintenance Report{% endblock %}
+
+{% block dashboard_content %}
+<section>
+    <span class="pill">Staff</span>
+    <h1>Create Maintenance Report</h1>
+    <p>Log a complaint, set the work status, assign staff, and capture the maintenance cost.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Report</button>
+    </form>
+</section>
+{% endblock %}

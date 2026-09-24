@@ -1,0 +1,67 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Landlord Maintenance Reports{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Maintenance Reports</h1>
+        <p>Review tenant complaints, repair progress, and maintenance costs across your properties.</p>
+    </div>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Complaints and Status</h2>
+        <span class="pill">{{ maintenance_reports_count }}</span>
+    </div>
+
+    <form method="get" class="dashboard-filter-bar">
+        <label for="status" class="dashboard-filter-label">Filter by status</label>
+        <select name="status" id="status" class="dashboard-filter-select">
+            <option value="">All statuses</option>
+            {% for status_value, status_label in status_choices %}
+            <option value="{{ status_value }}"{% if selected_status == status_value %} selected{% endif %}>{{ status_label }}</option>
+            {% endfor %}
+        </select>
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Apply</button>
+            <a href="{% url 'maintenance:landlord-list' %}" class="dashboard-filter-reset">Reset</a>
+        </div>
+    </form>
+
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Tenant</th>
+                    <th>Property</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Cost</th>
+                    <th>Assigned Staff</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in maintenance_reports %}
+                <tr>
+                    <td>{{ report.display_label }}</td>
+                    <td>{{ report.tenant.name|default:"Not attached" }}</td>
+                    <td>{{ report.property.property_name|default:"Not attached" }}</td>
+                    <td>{{ report.get_priority_display }}</td>
+                    <td>{{ report.get_status_display }}</td>
+                    <td>{{ report.cost|default:"Not set" }}</td>
+                    <td>{{ report.assigned_staff.username|default:report.assigned_staff.email|default:"Not assigned" }}</td>
+                    <td>{{ report.created_at|date:"Y-m-d" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="dashboard-table-empty">No maintenance complaints have been logged for your properties yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

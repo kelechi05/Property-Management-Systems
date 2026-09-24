@@ -1,0 +1,19 @@
+{% load static %}
+<nav class="navbar">
+    <div class="container">
+        <a href="{% url 'website:home' %}" class="brand">
+            <img src="{% static 'img/PNG LAND SCAPE-01.png' %}" alt="Property Management logo" class="brand-mark">
+            <span class="brand-text">
+                <span class="brand-name">PropertyHub</span>
+                <span class="brand-tagline">Management</span>
+            </span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="{% url 'website:home' %}">Home</a></li>
+            <li><a href="{% url 'website:about' %}">About</a></li>
+            <li><a href="{% url 'website:services' %}">Services</a></li>
+            <li><a href="{% url 'website:properties' %}">Properties</a></li>
+            <li><a href="{% url 'website:contact' %}">Contact</a></li>
+        </ul>
+    </div>
+</nav>

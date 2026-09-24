@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Verify Your Email Address" %} - Property Management{% endblock %}
+
+{% block main_class %}auth-container{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-badge">{% trans "Email Verification" %}</div>
+    <h1 class="auth-title">{% trans "Check Your Inbox" %}</h1>
+    <p class="auth-subtitle">{% trans "We sent a verification link to your email address so you can finish setting up your account." %}</p>
+  </div>
+
+  <p class="auth-copy">{% trans "Open the email and follow the verification link to complete your signup." %}</p>
+  <p class="auth-copy">{% trans "If you do not see the email in your inbox, check your spam folder or wait a few minutes and try again." %}</p>
+
+  <div class="auth-note">
+    <p>{% trans "Verification emails can take a short moment to arrive depending on your mail provider." %}</p>
+  </div>
+
+  <form method="post" action="{% url 'account_resend_verification' %}" class="auth-form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_email">{% trans "Resend to this email" %}</label>
+      <input type="email" name="email" id="id_email" required>
+    </div>
+    <button type="submit" class="auth-button">{% trans "Resend Verification Email" %}</button>
+  </form>
+
+  <div class="auth-actions">
+    <a href="{% url 'account_login' %}" class="auth-button auth-button--secondary">{% trans "Back to Sign In" %}</a>
+  </div>
+</div>
+{% endblock %}

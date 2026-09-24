@@ -1,0 +1,45 @@
+{% extends 'dashboard/landlord_base.html' %}
+{% block title %}My Properties - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>My Properties</h1>
+        <p>Review the properties under your account and see their current occupancy.</p>
+    </div>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Property Directory</h2>
+        <span class="pill">{{ managed_properties_count }}</span>
+    </div>
+
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Property Name</th>
+                    <th>Type</th>
+                    <th>Address</th>
+                    <th>Occupied Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in managed_properties %}
+                <tr>
+                    <td>{{ property.property_name }}</td>
+                    <td>{{ property.property_type }}</td>
+                    <td>{{ property.address }}</td>
+                    <td>{{ property.occupied_units_count }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="dashboard-table-empty">No properties are assigned to your account yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Pending Approval - Property Management{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Pending Approval</h1>
+        <p>Your account has been created successfully and is waiting for admin approval.</p>
+    </div>
+
+    <form method="post" action="{% url 'account_logout' %}" class="dashboard-signout-form">
+        {% csrf_token %}
+        <button type="submit" class="dashboard-signout-btn">Sign Out</button>
+    </form>
+</div>
+
+<div class="dashboard-stats">
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Status</h3>
+        </div>
+        <div class="stat-card-value">
+            <p class="stat-number">Pending</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Next Step</h3>
+        </div>
+        <div class="stat-card-value">
+            <p>Please wait for an admin to assign your account role.</p>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">
+            <h3>Access</h3>
+        </div>
+        <div class="stat-card-value">
+            <p>You will be redirected to the correct dashboard after approval.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

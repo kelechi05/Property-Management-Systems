@@ -1,0 +1,360 @@
+{% extends "account/base.html" %}
+{% load socialaccount %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #f7fafc 0%, #f0f4f8 100%);
+  }
+
+  .account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 40px 20px;
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 14px 34px rgba(17, 24, 39, 0.08);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .login-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .login-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    color: #111827;
+    background: #f5f7fb;
+    transition: all 0.2s ease;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: #1655f2;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(22, 85, 242, 0.1);
+  }
+
+  .form-group input::placeholder {
+    color: #6b7280;
+  }
+
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    font-size: 14px;
+  }
+
+  .form-actions label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-weight: 500;
+    color: #111827;
+    cursor: pointer;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .form-actions input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #1655f2;
+  }
+
+  .form-actions a {
+    color: #1655f2;
+    font-weight: 600;
+    transition: color 0.2s ease;
+    text-decoration: none;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .form-actions a:hover {
+    color: #000082;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #1655f2 0%, #000082 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(22, 85, 242, 0.3);
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(22, 85, 242, 0.4);
+  }
+
+  .btn-login:active {
+    transform: translateY(0);
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 12px 14px;
+    margin: 0 0 20px 0;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1.5px solid #fca5a5;
+    border-radius: 10px;
+    color: #991b1b;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .errorlist li {
+    margin: 0;
+  }
+
+  .errorlist li + li {
+    margin-top: 4px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0;
+    color: #6b7280;
+    font-size: 13px;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+  }
+
+  .social-login {
+    margin-bottom: 24px;
+  }
+
+  .btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f5f7fb;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Manrope', sans-serif;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .btn-google:hover {
+    background: white;
+    border-color: #1655f2;
+    color: #1655f2;
+  }
+
+  .login-footer {
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 24px;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  .login-footer a {
+    color: #1655f2;
+    font-weight: 600;
+    transition: color 0.2s ease;
+    text-decoration: none;
+  }
+
+  .login-footer a:hover {
+    color: #000082;
+  }
+
+  .resend-card {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .resend-card p {
+    margin: 0 0 16px;
+    color: #6b7280;
+    font-size: 14px;
+    font-family: 'Manrope', sans-serif;
+  }
+
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 32px 24px;
+    }
+
+    .login-title {
+      font-size: 24px;
+    }
+
+    .form-actions {
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<div class="account">
+  <div class="login-card">
+    <div class="login-header">
+      <h1 class="login-title">{% trans "Sign In" %}</h1>
+      <p class="login-subtitle">{% trans "Access your property management dashboard" %}</p>
+    </div>
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    <ul class="errorlist">
+      {% for error in form.non_field_errors %}
+      <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <form method="POST" action="{% url 'account_login' %}" class="login-form">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="{{ form.login.id_for_label }}">{% trans "Email or Username" %}</label>
+        {{ form.login }}
+        {% if form.login.errors %}
+        <ul class="errorlist">
+          {% for error in form.login.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">{% trans "Password" %}</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+        <ul class="errorlist">
+          {% for error in form.password.errors %}
+          <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="form-actions">
+        <label>
+          {{ form.remember }}
+          {% trans "Remember me" %}
+        </label>
+        <a href="{% url 'account_reset_password' %}">{% trans "Forgot password?" %}</a>
+      </div>
+
+      <button type="submit" class="btn-login">{% trans "Sign In" %}</button>
+    </form>
+
+    <div class="divider">{% trans "or" %}</div>
+
+    <div class="social-login">
+      <a href="{% provider_login_url 'google' %}" class="btn-google">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.6915026,9.13216994 C16.6915026,8.59450332 16.6498571,8.20448348 16.5545566,7.78625738 L8.5,7.78625738 L8.5,10.6575468 L13.2273474,10.6575468 C13.080722,11.7847994 12.547035,12.8915667 11.5898226,13.5701671 L14.409946,15.8640719 C15.8821956,14.6047506 16.6915026,12.7381565 16.6915026,9.13216994 Z" fill="#4285F4"/>
+          <path d="M8.5,17.5 C10.7959763,17.5 12.7765979,16.8259922 14.409946,15.8640719 L11.5898226,13.5701671 C10.8931038,14.1057742 9.99151325,14.4652778 8.5,14.4652778 C6.00636533,14.4652778 3.87393715,12.8428899 3.1360tolkien,10.6575468 L0.203839253,10.6575468 L0.203839253,12.9993629 C1.8372291,15.7639908 5.00636533,17.5 8.5,17.5 Z" fill="#34A853"/>
+          <path d="M3.1360tolkien,10.6575468 C2.92734788,10.0925505 2.81584785,9.47393306 2.81584785,8.82812501 C2.81584785,8.18231696 2.92734788,7.56379954 3.1360tolkien,7.00 L3.1360tolkien,4.65633966 L0.203839253,4.65633966 C-0.555980846,6.29434989 -0.988,8.01055085 -0.988,9.82812501 C-0.988,11.6457092 -0.555980846,13.3619101 0.203839253,14.999713 L3.1360tolkien,12.6558986 Z" fill="#FBBC05"/>
+          <path d="M8.5,3.19187222 C10.2590301,3.19187222 11.5898226,3.90841624 12.3860335,4.56461155 L15.1272231,1.8797835 C12.7765979,-0.624094496 10.7959763,0 8.5,0 C5.00636533,0 1.8372291,1.75600917 0.203839253,4.52066289 L3.1360tolkien,7.00 C3.87393715,4.81471096 6.00636533,3.19187222 8.5,3.19187222 Z" fill="#EA4335"/>
+        </svg>
+        {% trans "Sign in with Google" %}
+      </a>
+    </div>
+
+    <div class="login-footer">
+      {% trans "Don't have an account?" %} 
+      <a href="{% url 'account_signup' %}">{% trans "Create one" %}</a>
+    </div>
+
+    <div class="resend-card">
+      <p>{% trans "Still waiting for your verification email?" %}</p>
+      <form method="post" action="{% url 'account_resend_verification' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="resend_email">{% trans "Email Address" %}</label>
+          <input type="email" name="email" id="resend_email" required>
+        </div>
+        <button type="submit" class="btn-login">{% trans "Resend Verification Email" %}</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

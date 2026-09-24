@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Services - Property Management{% endblock %}
+
+{% block content %}
+<section class="hero properties-hero"{% if active_service and active_service.services_image %} style="background-image: url('{{ active_service.services_image.url }}');"{% endif %}>
+    {% for service in services %}
+    {% if active_service and service.pk == active_service.pk %}
+    <h1>{{ service.title }}</h1>
+    {% endif %}
+    {% endfor %}
+
+</section>
+
+<section class="plain-section">
+    <div class="services-layout">
+        <aside class="services-sidebar">
+            <div class="services-sidebar-header">
+                
+                <h2>Other Services</h2>
+            </div>
+            <div class="services-sidebar-list">
+                {% for service in services %}
+                <a
+                    href="{% url 'website:service-detail' service.pk %}"
+                    class="service-sidebar-item{% if active_service and service.pk == active_service.pk %} is-active{% endif %}"
+                >
+                    <span class="service-sidebar-title">{{ service.title }}</span>
+                </a>
+                {% empty %}
+                <div class="service-sidebar-item is-empty">
+                    <span class="service-sidebar-title">No services available</span>
+                    <span class="service-sidebar-copy">Add services in the admin panel to populate this page.</span>
+                </div>
+                {% endfor %}
+            </div>
+        </aside>
+
+        <div class="services-main">
+            {% if active_service %}
+            <article class="service-page-card">
+                
+                <div class="service-page-content">
+                    
+                    <h2>{{ active_service.title }}</h2>
+            
+                    <div>{{ active_service.description|safe }}</div>
+                </div>
+            </article>
+            {% else %}
+            <article class="service-page-card">
+                <div class="service-page-content">
+                    
+                    <h2>No services available</h2>
+                    <p>Add services in the admin panel to populate this page.</p>
+                </div>
+            </article>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

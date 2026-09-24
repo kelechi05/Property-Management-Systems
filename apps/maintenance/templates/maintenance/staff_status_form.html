@@ -1,0 +1,30 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Update Maintenance Status{% endblock %}
+
+{% block dashboard_content %}
+<section>
+    <span class="pill">Staff</span>
+    <h1>Update Maintenance Status</h1>
+    <p>Change the complaint status, set the maintenance cost, and add internal staff notes.</p>
+
+    <div class="dashboard-list" style="margin-bottom: 18px;">
+        <article class="dashboard-list-item">
+            <h3>{{ object.display_label }}</h3>
+            <p>
+                Tenant: {{ object.tenant.name|default:"Not attached" }} |
+                Property: {{ object.property.property_name|default:"Not attached" }} |
+                Submitted by: {{ object.get_submitted_by_display }}
+            </p>
+            {% if object.description %}
+            <p>{{ object.description }}</p>
+            {% endif %}
+        </article>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Report</button>
+    </form>
+</section>
+{% endblock %}

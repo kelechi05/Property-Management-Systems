@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% block title %}{{ listing.apartment_type }} - Property Details{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const media = document.querySelector('[data-property-gallery]');
+    if (!media) {
+        return;
+    }
+
+    const slides = Array.from(media.querySelectorAll('[data-gallery-slide]'));
+    const prevButton = media.querySelector('[data-gallery-prev]');
+    const nextButton = media.querySelector('[data-gallery-next]');
+    const currentLabel = media.querySelector('[data-gallery-current]');
+    let activeIndex = 0;
+
+    function render(index) {
+        activeIndex = index;
+        slides.forEach(function (slide, slideIndex) {
+            const isActive = slideIndex === activeIndex;
+            slide.hidden = !isActive;
+            slide.setAttribute('aria-hidden', String(!isActive));
+        });
+
+        if (currentLabel) {
+            currentLabel.textContent = String(activeIndex + 1).padStart(2, '0');
+        }
+
+        if (prevButton) {
+            prevButton.disabled = activeIndex === 0;
+        }
+
+        if (nextButton) {
+            nextButton.disabled = activeIndex === slides.length - 1;
+        }
+    }
+
+    if (prevButton) {
+        prevButton.addEventListener('click', function () {
+            if (activeIndex > 0) {
+                render(activeIndex - 1);
+            }
+        });
+    }
+
+    if (nextButton) {
+        nextButton.addEventListener('click', function () {
+            if (activeIndex < slides.length - 1) {
+                render(activeIndex + 1);
+            }
+        });
+    }
+
+    render(0);
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="property-detail-hero plain-section">
+    <div class="property-detail-grid">
+        <div class="property-detail-media" data-property-gallery>
+            <div class="property-detail-gallery">
+                {% for image in gallery_images %}
+                <figure class="property-detail-slide" data-gallery-slide {% if not forloop.first %}hidden{% endif %}>
+                    <img src="{{ image.url }}" alt="{{ listing.apartment_type }} view {{ forloop.counter }}" class="property-detail-image">
+                </figure>
+                {% endfor %}
+            </div>
+
+            <div class="property-detail-gallery-controls">
+                <button type="button" class="property-gallery-button" data-gallery-prev>Previous</button>
+                <div class="property-gallery-counter">
+                    <span data-gallery-current>01</span>
+                    <span>/ {{ gallery_images|length|stringformat:"02d" }}</span>
+                </div>
+                <button type="button" class="property-gallery-button" data-gallery-next>Next</button>
+            </div>
+        </div>
+        <div class="property-detail-content">
+            <span class="pill">Verified Listing</span>
+            <h1>{{ listing.apartment_type }}</h1>
+            <p class="property-detail-location">{{ listing.location }}</p>
+            <p class="property-detail-price">${{ listing.price }}</p>
+            <p class="property-detail-description">{{ listing.description }}</p>
+
+            <div class="property-detail-actions">
+                <a class="btn" href="{% url 'website:properties' %}">Back to Properties</a>
+                <a class="details-link details-link-secondary" href="{% url 'website:contact' %}">Enquire Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="property-facts">
+    <div class="property-facts-header">
+        <span class="pill">Property Facts</span>
+        <h2>Complete listing information</h2>
+    </div>
+
+    <div class="property-facts-grid">
+        <article class="property-fact-card">
+            <h3>Apartment Type</h3>
+            <p>{{ listing.apartment_type }}</p>
+        </article>
+        <article class="property-fact-card">
+            <h3>Location</h3>
+            <p>{{ listing.location }}</p>
+        </article>
+        <article class="property-fact-card">
+            <h3>Price</h3>
+            <p>${{ listing.price }}</p>
+        </article>
+        <article class="property-fact-card">
+            <h3>Listing Status</h3>
+            <p>{% if listing.is_checked %}Approved for display{% else %}Pending review{% endif %}</p>
+        </article>
+        <article class="property-fact-card">
+            <h3>Created</h3>
+            <p>{{ listing.created_at|date:"F j, Y" }}</p>
+        </article>
+        <article class="property-fact-card">
+            <h3>Last Updated</h3>
+            <p>{{ listing.updated_at|date:"F j, Y" }}</p>
+        </article>
+    </div>
+</section>
+
+<section class="property-description-panel">
+    <span class="pill">Description</span>
+    <h2>About this property</h2>
+    <p>{{ listing.description }}</p>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Verify Your Email Address" %} - Property Management{% endblock %}
+
+{% block main_class %}auth-container{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+  <div class="auth-header">
+    <div class="auth-badge">{% trans "Email Verification" %}</div>
+    <h1 class="auth-title">{% trans "Verify Your Email Address" %}</h1>
+    <p class="auth-subtitle">{% trans "Before continuing, we need to confirm that this account belongs to you." %}</p>
+  </div>
+
+  {% url 'account_email' as email_url %}
+
+  <p class="auth-copy">{% trans "We sent a verification email to your inbox. Open it and click the verification link to continue." %}</p>
+  <p class="auth-copy">{% trans "If you do not see the email in your main inbox, check your spam folder or wait a few minutes and try again." %}</p>
+
+  <div class="auth-note">
+    <p>{% blocktrans %}You can still <a href="{{ email_url }}">change your email address</a> if needed.{% endblocktrans %}</p>
+  </div>
+
+  <div class="auth-actions">
+    <a href="{% url 'account_login' %}" class="auth-button auth-button--secondary">{% trans "Back to Sign In" %}</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'dashboard/staff_base.html' %}
+{% block title %}Staff Maintenance Queue{% endblock %}
+
+{% block dashboard_content %}
+<div class="dashboard-header">
+    <div>
+        <h1>Staff Maintenance Queue</h1>
+        <p>View tenant and staff complaints, check maintenance status, and update repair costs.</p>
+    </div>
+
+    <a href="{% url 'maintenance:staff-create' %}" class="dashboard-primary-btn dashboard-inline-action">Create Report</a>
+</div>
+
+<section class="dashboard-panel">
+    <div class="dashboard-panel-header">
+        <h2>Maintenance Complaints</h2>
+        <span class="pill">{{ maintenance_reports_count }}</span>
+    </div>
+
+    <form method="get" class="dashboard-filter-bar">
+        <label for="status" class="dashboard-filter-label">Filter by status</label>
+        <select name="status" id="status" class="dashboard-filter-select">
+            <option value="">All statuses</option>
+            {% for status_value, status_label in status_choices %}
+            <option value="{{ status_value }}"{% if selected_status == status_value %} selected{% endif %}>{{ status_label }}</option>
+            {% endfor %}
+        </select>
+        <div class="dashboard-filter-actions">
+            <button type="submit" class="dashboard-filter-button">Apply</button>
+            <a href="{% url 'maintenance:staff-list' %}" class="dashboard-filter-reset">Reset</a>
+        </div>
+    </form>
+
+    <div class="dashboard-table-wrap">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Tenant</th>
+                    <th>Property</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Cost</th>
+                    <th>Submitted By</th>
+                    <th>Assigned Staff</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in maintenance_reports %}
+                <tr>
+                    <td>{{ report.display_label }}</td>
+                    <td>{{ report.tenant.name|default:"Not attached" }}</td>
+                    <td>{{ report.property.property_name|default:"Not attached" }}</td>
+                    <td>{{ report.get_priority_display }}</td>
+                    <td>{{ report.get_status_display }}</td>
+                    <td>{{ report.cost|default:"Not set" }}</td>
+                    <td>{{ report.get_submitted_by_display }}</td>
+                    <td>{% if report.assigned_staff %}{{ report.assigned_staff.username|default:report.assigned_staff.email }}{% else %}Not assigned{% endif %}</td>
+                    <td><a href="{% url 'maintenance:staff-update' report.pk %}" class="pill">Update</a></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="9" class="dashboard-table-empty">No maintenance complaints are available for your assigned records yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

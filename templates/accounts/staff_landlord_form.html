@@ -1,0 +1,41 @@
+{% extends 'dashboard/staff_base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Landlord{% else %}Add Landlord{% endif %}{% endblock %}
+
+{% block dashboard_content %}
+<section>
+    <span class="pill">Staff</span>
+    <h1>{% if form.instance.pk %}Edit Landlord{% else %}Add Landlord{% endif %}</h1>
+    <p>{% if form.instance.pk %}Update the landlord record and any linked property information from one page.{% else %}Create a landlord record and automatically assign it to your staff profile.{% endif %}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="dashboard-panel dashboard-record-panel">
+            <div class="dashboard-panel-header">
+                <h2>Landlord Details</h2>
+            </div>
+            {{ form.as_p }}
+        </div>
+
+        {% if form.instance.pk %}
+        <div class="dashboard-panel dashboard-record-panel">
+            <div class="dashboard-panel-header">
+                <h2>Property Details</h2>
+            </div>
+            {{ property_formset.management_form }}
+            {% for property_form in property_formset %}
+            <div class="dashboard-record-item">
+                <h3>Property {{ forloop.counter }}</h3>
+                {{ property_form.as_p }}
+            </div>
+            {% empty %}
+            <p>No properties are linked to this landlord yet.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <button type="submit">{% if form.instance.pk %}Update Landlord{% else %}Save Landlord{% endif %}</button>
+    </form>
+    <p><a href="{% url 'accounts:staff-tenant-create' %}">Need to add a tenant instead?</a></p>
+</section>
+{% endblock %}

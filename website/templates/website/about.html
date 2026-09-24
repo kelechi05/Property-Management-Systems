@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Us - Property Management{% endblock %}
+
+{% block content %}
+<section class="about-story">
+    <div class="about-story-copy">
+        <h1>Our Story</h1>
+        <p>Copen Services Limited was incorporated in January 1992 but started full operations in July 1995. It has an enviable record in the field of construction and engineering, including roads and buildings, erosion control, water resources development, and specialized procurements, where we have completed projects to the satisfaction of our clients. We are duly registered with Federal and State governments, including the Federal Works Registration Board - Federal Ministry of Works and Housing in category D, the highest category, and also with the VAT office.</p>
+    </div>
+    <div class="about-story-media">
+        <img src="{% static 'img/portrait-two-african-colleague-standing-front-building-talking-each-other (1).jpg' %}" alt="About Copen Services Limited">
+    </div>
+</section>
+
+<section class="about-team">
+    <div class="about-team-header">
+        <h2>Meet Our Team</h2>
+    </div>
+    <div class="about-team-grid">
+        {% for member in team_members %}
+        <article class="team-member-card">
+            <img src="{{ member.image.url }}" alt="{{ member.name }} profile">
+            <div class="team-member-copy">
+                <h3>{{ member.name }}</h3>
+                <p>{{ member.position }}</p>
+            </div>
+        </article>
+        {% empty %}
+        <p class="dashboard-table-empty">No team members found.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="about-purpose purpose">
+    <div class="about-purpose-header">
+        <h2>Mission & Vision</h2>
+    </div>
+    <div class="about-purpose-grid">
+        <article class="about-purpose-card">
+            
+            <h3>Our Mission</h3>
+            <p>Our mission is to provide honest, professional, and customer-focused land and property services through integrity, transparency, innovation, and excellence. We are committed to helping clients make secure property decisions, building lasting relationships, and contributing to sustainable community development.</p>
+        </article>
+        <article class="about-purpose-card">
+            
+            <h3>Our Vision</h3>
+            <p>To restore trust, confidence, and transparency in the land and property business by delivering reliable real estate solutions that empower individuals, families, and investors to own and manage property with peace of mind.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}
