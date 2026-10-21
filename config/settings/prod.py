@@ -7,8 +7,7 @@ import os
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
-
+ALLOWED_HOSTS = ['*']
 # SECURITY SETTINGS
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
@@ -22,16 +21,17 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
 # Database - configure using environment variables
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', 'property_management'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
-    }
-}
+#"""DATABASES = {
+ #   'default': {
+  #      'ENGINE': os.getenv('DB_ENGINE', 'django.db.#backends.postgresql'),
+   #     'NAME': os.getenv('DB_NAME', #'property_management'),
+    #    'USER': os.getenv('DB_USER', 'postgres'),
+     #   'PASSWORD': os.getenv('DB_PASSWORD', ''),
+      #  'HOST': os.getenv('DB_HOST', 'localhost'),
+       # 'PORT': os.getenv('DB_PORT', '5432'),
+    #}
+#}
+
 
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

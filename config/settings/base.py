@@ -84,11 +84,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+DATABASE_URL = os.getenv('DATABASE_URL')  # Get the database URL from environment variable
+
 # Database
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL')
-    )
+        default = DATABASE_URL or f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=bool(
+            DATABASE_URL and DATABASE_URL.startswith(('postgres://','postgresql://'))
+        ),
+    ),
+
 }
 
 # Password validation
