@@ -21,7 +21,13 @@ class EdxProvider(OAuth2Provider):
         return ["profile"]
 
     def extract_uid(self, data):
-        """Extract uid ('id') and ensure it's a str."""
+        """
+        Note that EDX documents:
+
+        https://docs.openedx.org/en/ulmo/developers/references/internal_data_formats/data_references/sql_schema.html#username
+
+            "Open edX has never allowed users to change usernames, but might do so in the future."
+        """
         return str(data["username"])
 
     def extract_common_fields(self, data):

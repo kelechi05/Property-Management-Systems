@@ -20,6 +20,14 @@ class ExistProvider(OAuth2Provider):
     oauth2_adapter_class = ExistOAuth2Adapter
 
     def extract_uid(self, data):
+        """
+        See:
+
+        https://developer.exist.io/reference/users/#request
+
+        As there is no true ID we can use, security depends on whether or not
+        Exist allows renaming and reclaiming of usernames.
+        """
         return data.get("username")
 
     def extract_common_fields(self, data):

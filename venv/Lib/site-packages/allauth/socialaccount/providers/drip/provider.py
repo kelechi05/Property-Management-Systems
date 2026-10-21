@@ -17,9 +17,9 @@ class DripProvider(OAuth2Provider):
     oauth2_adapter_class = DripOAuth2Adapter
 
     def extract_uid(self, data):
-        # no uid available, we generate one by hashing the email
-        uid = hash(data.get("email"))
-        return str(uid)
+        # There is no ID:
+        # https://developer.drip.com/?shell#users
+        return data.get("email")
 
     def extract_common_fields(self, data):
         return dict(email=data.get("email"), name=data.get("name"))

@@ -17,7 +17,7 @@ class TumblrOAuth2Provider(OAuth2Provider):
     oauth2_adapter_class = TumblrOAuth2Adapter
 
     def extract_uid(self, data):
-        return data["name"]
+        return next(blog["uuid"] for blog in data["blogs"] if blog.get("primary"))
 
     def extract_common_fields(self, data):
         return dict(

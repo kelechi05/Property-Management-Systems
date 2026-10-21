@@ -15,7 +15,7 @@ class PinterestOAuth2Adapter(OAuth2Adapter):
     provider_id = "pinterest"
 
     provider_default_url = "api.pinterest.com"
-    provider_default_api_version = "v1"
+    provider_default_api_version = "v5"
 
     settings = app_settings.PROVIDERS.get(provider_id, {})
 
@@ -25,15 +25,7 @@ class PinterestOAuth2Adapter(OAuth2Adapter):
     authorize_url = "https://www.pinterest.com/oauth/"
     access_token_url = f"https://{provider_base_url}/{provider_api_version}/oauth/token"
     basic_auth = True
-    if provider_api_version == "v5":
-        profile_url = f"https://{provider_base_url}/{provider_api_version}/user_account"
-    elif provider_api_version == "v3":
-        profile_url = f"https://{provider_base_url}/{provider_api_version}/users/me"
-    else:
-        profile_url = f"https://{provider_base_url}/{provider_api_version}/me"
-
-    if provider_api_version == "v3":
-        access_token_method = "PUT"  # nosec
+    profile_url = f"https://{provider_base_url}/{provider_api_version}/user_account"
 
     def complete_login(self, request: HttpRequest, app, token, **kwargs):
         headers = {"Authorization": f"Bearer {token.token}"}

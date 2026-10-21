@@ -8,6 +8,7 @@ def get_session_user(session: SessionBase) -> AbstractBaseUser | None:
     request = HttpRequest()
     request.session = session
     user = get_user(request)
+    # NOTE: `ModelBackend` already checks for `user.is_active`.
     if not user or user.is_anonymous:
         return None
     return user

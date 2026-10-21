@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: 0.61.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-08 13:31-0500\n"
-"PO-Revision-Date: 2025-11-11 12:51+0000\n"
+"PO-Revision-Date: 2026-09-20 09:36+0200\n"
 "Last-Translator: Federico Bond <federicobond@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/allauth/django-"
 "allauth/es/>\n"
@@ -206,7 +206,7 @@ msgstr "Correo electrónico o teléfono"
 
 #: account/forms.py:143
 msgid "Forgot your password?"
-msgstr "¿Ha olvidado tu contraseña?"
+msgstr "¿Ha olvidado su contraseña?"
 
 #: account/forms.py:286
 msgid "Email (again)"

@@ -9,7 +9,9 @@ from allauth.socialaccount.providers.oauth2.provider import OAuth2Provider
 
 class BitbucketOAuth2Account(ProviderAccount):
     def get_profile_url(self):
-        return self.account.extra_data.get("links", {}).get("html", {}).get("href")
+        if username := self.account.extra_data.get("username"):
+            return f"https://bitbucket.org/{username}"
+        return None
 
     def get_avatar_url(self):
         return self.account.extra_data.get("links", {}).get("avatar", {}).get("href")
@@ -22,7 +24,7 @@ class BitbucketOAuth2Provider(OAuth2Provider):
     oauth2_adapter_class = BitbucketOAuth2Adapter
 
     def extract_uid(self, data):
-        return data["username"]
+        return data["account_id"]
 
     def extract_common_fields(self, data):
         return dict(

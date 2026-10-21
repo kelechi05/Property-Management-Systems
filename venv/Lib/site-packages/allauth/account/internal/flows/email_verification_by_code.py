@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 
@@ -10,7 +8,7 @@ from allauth.account.adapter import get_adapter
 from allauth.account.internal.flows.code_verification import (
     AbstractCodeVerificationProcess,
 )
-from allauth.account.internal.stagekit import clear_login
+from allauth.account.internal.stagekit import clear_login, pop_login
 from allauth.account.internal.userkit import did_user_login, user_email
 from allauth.account.models import EmailAddress
 from allauth.core import context
@@ -49,7 +47,10 @@ class EmailVerificationProcess(AbstractCodeVerificationProcess):
 
     def abort(self) -> None:
         self.request.session.pop(EMAIL_VERIFICATION_CODE_SESSION_KEY, None)
-        clear_login(self.request)
+        if self.request.user.is_authenticated:
+            pop_login(self.request)
+        else:
+            clear_login(self.request)
 
     def send(self, skip_enumeration_mails: bool = False) -> None:
         from allauth.account.internal.flows.email_verification import (
@@ -98,7 +99,7 @@ class EmailVerificationProcess(AbstractCodeVerificationProcess):
     @classmethod
     def initiate(
         cls, *, request: HttpRequest, user, email: str
-    ) -> "EmailVerificationProcess":
+    ) -> EmailVerificationProcess:
         state = cls.initial_state(user, email)
         process = EmailVerificationProcess(request=request, user=user, state=state)
         process.generate_code()
@@ -107,7 +108,7 @@ class EmailVerificationProcess(AbstractCodeVerificationProcess):
         return process
 
     @classmethod
-    def resume(cls, request: HttpRequest) -> Optional["EmailVerificationProcess"]:
+    def resume(cls, request: HttpRequest) -> EmailVerificationProcess | None:
         if not app_settings.EMAIL_VERIFICATION_BY_CODE_ENABLED:
             return None
         state = request.session.get(EMAIL_VERIFICATION_CODE_SESSION_KEY)

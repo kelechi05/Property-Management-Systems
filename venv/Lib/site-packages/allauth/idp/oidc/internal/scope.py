@@ -30,7 +30,7 @@ def is_scope_granted(
         | list[list[str]]
         | dict[str, str | list[str] | list[list[str]]]
     ),
-    token: Token,
+    token: Token | None,
     method: str | None = None,
 ) -> bool:
     if scope is None:

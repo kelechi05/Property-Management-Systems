@@ -76,6 +76,16 @@ class AppSettings:
         return self._setting("TRUSTED_CLIENT_IP_HEADER", None)
 
     @property
+    def RATE_LIMIT_IPV6_PREFIX(self) -> int:
+        """
+        For rate limiting purposes, IPv6 addresses are truncated to their network
+        prefix to prevent attackers from bypassing rate limits by rotating through
+        addresses within their allocated prefix. This setting controls the prefix
+        length. The default is 64, which corresponds to a standard /64 subnet.
+        """
+        return self._setting("RATE_LIMIT_IPV6_PREFIX", 64)
+
+    @property
     def USER_CODE_FORMAT(self) -> UserCodeFormat:
         """
         Controls the format of user-facing verification codes (e.g. email

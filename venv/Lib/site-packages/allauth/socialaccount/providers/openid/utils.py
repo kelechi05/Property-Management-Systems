@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import base64
 import pickle  # nosec
+import time
 from collections import UserDict
 
 from openid.association import Association as OIDAssociation
 from openid.extensions.ax import FetchResponse
 from openid.extensions.sreg import SRegResponse
 from openid.store.interface import OpenIDStore as OIDStore
+from openid.store.nonce import SKEW
 
 from allauth.account.internal.emailkit import valid_email_or_none
 
@@ -74,8 +76,6 @@ SRegFields = [
 
 
 class DBOpenIDStore(OIDStore):
-    max_nonce_age = 6 * 60 * 60
-
     def storeAssociation(self, server_url, assoc=None) -> None:
         secret = base64.encodebytes(assoc.secret).decode()
         OpenIDStore.objects.create(
@@ -129,6 +129,9 @@ class DBOpenIDStore(OIDStore):
         stored_assocs.delete()
 
     def useNonce(self, server_url, timestamp, salt):
+        if abs(timestamp - time.time()) > SKEW:
+            return False
+
         try:
             OpenIDNonce.objects.get(
                 server_url=server_url, timestamp=timestamp, salt=salt

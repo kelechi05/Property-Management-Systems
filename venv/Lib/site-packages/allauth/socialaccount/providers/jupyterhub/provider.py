@@ -16,6 +16,11 @@ class JupyterHubProvider(OAuth2Provider):
     oauth2_adapter_class = JupyterHubOAuth2Adapter
 
     def extract_uid(self, data):
+        """
+        We receive only the Hub-local name from the user endpoint. Its
+        safety depends on the authenticator and administrator not reassigning
+        usernames. There is no generic stable alternate in the response.
+        """
         return str(data.get("name"))
 
     def extract_common_fields(self, data):

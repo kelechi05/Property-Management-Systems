@@ -125,12 +125,12 @@ msgstr "Utilitzeu la vostra paraula de pas"
 
 #: account/adapter.py:834
 msgid "Use authenticator app or code"
-msgstr "Utilitzar una aplicació d’autenticació o un codi"
+msgstr "Utilitza una aplicació d’autenticació o un codi"
 
 #: account/adapter.py:841 templates/mfa/authenticate.html:41
 #: templates/mfa/webauthn/reauthenticate.html:15
 msgid "Use a security key"
-msgstr "Utilitzar una clau de seguretat"
+msgstr "Utilitza una clau de seguretat"
 
 #: account/admin.py:30
 #, python-brace-format
@@ -179,7 +179,7 @@ msgstr "Contrasenya"
 
 #: account/forms.py:65
 msgid "Remember Me"
-msgstr "Recordar-me"
+msgstr "Recorda'm"
 
 #: account/forms.py:78 account/forms.py:81 account/forms.py:264
 #: account/forms.py:267 account/forms.py:310
@@ -312,7 +312,7 @@ msgstr "Veure la vostra informació bàsica de perfil"
 
 #: idp/oidc/forms.py:31
 msgid "Grant permissions"
-msgstr "Atorgar permisos"
+msgstr "Atorga els permisos"
 
 #: idp/oidc/internal/clientkit.py:22
 msgid "Wildcards are not allowed unless 'Allow URI wildcards' is enabled."
@@ -619,7 +619,7 @@ msgstr "Dades de perfil invàlides"
 
 #: socialaccount/providers/dummy/templates/dummy/authenticate_form.html:16
 msgid "Login"
-msgstr "Iniciar sessió"
+msgstr "Inicia la sessió"
 
 #: socialaccount/providers/dummy/templates/dummy/authenticate_form.html:19
 #: templates/account/base_confirm_code.html:48
@@ -629,7 +629,7 @@ msgstr "Iniciar sessió"
 #: templates/mfa/authenticate.html:28 templates/mfa/authenticate.html:44
 #: templates/mfa/trust.html:29 templates/mfa/webauthn/signup_form.html:26
 msgid "Cancel"
-msgstr "Cancel·lar"
+msgstr "Cancel·la"
 
 #: socialaccount/providers/oauth/client.py:86
 #, python-format
@@ -689,11 +689,11 @@ msgstr ""
 #: templates/idp/oidc/device_authorization_confirm_form.html:26
 #: templates/mfa/reauthenticate.html:18
 msgid "Confirm"
-msgstr "Confirmar"
+msgstr "Confirma"
 
 #: templates/account/base_confirm_code.html:43
 msgid "Request new code"
-msgstr "Sol·licitar un nou codi"
+msgstr "Sol·licita un nou codi"
 
 #: templates/account/base_reauthenticate.html:5
 #: templates/account/base_reauthenticate.html:9
@@ -720,7 +720,7 @@ msgstr "Entreu un codi d’autenticació de correu"
 
 #: templates/account/confirm_email_verification_code.html:16
 msgid "Use a different email address"
-msgstr "Utilitzar una adreça de correu electrònic diferent"
+msgstr "Utilitza una adreça de correu electrònic diferent"
 
 #: templates/account/confirm_login_code.html:5 templates/account/login.html:5
 #: templates/account/login.html:9 templates/account/login.html:31
@@ -731,7 +731,7 @@ msgstr "Utilitzar una adreça de correu electrònic diferent"
 #: templates/socialaccount/login.html:5
 #: templates/socialaccount/login_redirect.html:5
 msgid "Sign In"
-msgstr "Iniciar sessió"
+msgstr "Inicia la sessió"
 
 #: templates/account/confirm_login_code.html:8
 msgid "Enter Sign-In Code"
@@ -760,7 +760,7 @@ msgstr "Introduïu el codi de verificació del telèfon"
 
 #: templates/account/confirm_phone_verification_code.html:15
 msgid "Use a different phone number"
-msgstr "Utilitzar un número de telèfon diferent"
+msgstr "Utilitza un número de telèfon diferent"
 
 #: templates/account/email.html:4 templates/account/email.html:8
 msgid "Email Addresses"
@@ -785,27 +785,27 @@ msgstr "Principal"
 
 #: templates/account/email.html:44
 msgid "Make Primary"
-msgstr "Definir com a principal"
+msgstr "Defineix com a principal"
 
 #: templates/account/email.html:47 templates/account/email_change.html:37
 #: templates/account/phone_change.html:24
 msgid "Re-send Verification"
-msgstr "Reenviar Verificació"
+msgstr "Reenvia la verificació"
 
 #: templates/account/email.html:50
 #: templates/mfa/webauthn/authenticator_confirm_delete.html:16
 #: templates/mfa/webauthn/authenticator_list.html:60
 #: templates/socialaccount/connections.html:40
 msgid "Remove"
-msgstr "Eliminar"
+msgstr "Elimina"
 
 #: templates/account/email.html:59
 msgid "Add Email Address"
-msgstr "Afegir adreça de correu electrònic"
+msgstr "Afegeix una adreça de correu electrònic"
 
 #: templates/account/email.html:70
 msgid "Add Email"
-msgstr "Afegir correu electrònic"
+msgstr "Afegeix el correu electrònic"
 
 #: templates/account/email.html:80
 msgid "Do you really want to remove the selected email address?"
@@ -1053,22 +1053,22 @@ msgstr ""
 
 #: templates/account/email_change.html:41
 msgid "Cancel Change"
-msgstr "Cancel·lar el canvi"
+msgstr "Cancel·la el canvi"
 
 #: templates/account/email_change.html:49
 #: templates/account/phone_change.html:32
 msgid "Change to"
-msgstr "Canviar a"
+msgstr "Canvia a"
 
 #: templates/account/email_change.html:55
 #: templates/allauth/layouts/base.html:31
 msgid "Change Email"
-msgstr "Canviar correu electrònic"
+msgstr "Canvia el correu electrònic"
 
 #: templates/account/email_confirm.html:6
 #: templates/account/email_confirm.html:10
 msgid "Confirm Email Address"
-msgstr "Confirmar adreça de correu electrònic"
+msgstr "Confirma l'adreça de correu electrònic"
 
 #: templates/account/email_confirm.html:16
 #, python-format
@@ -1121,7 +1121,7 @@ msgstr "Envieu-me un codi d'inici de sessió"
 #: templates/idp/oidc/logout.html:21
 #: templates/usersessions/usersession_list.html:76
 msgid "Sign Out"
-msgstr "Tancar sessió"
+msgstr "Tanca la sessió"
 
 #: templates/account/logout.html:11 templates/idp/oidc/logout.html:11
 msgid "Are you sure you want to sign out?"
@@ -1193,7 +1193,7 @@ msgstr "Adreça de correu electrònic principal establerta."
 #: templates/account/password_reset_from_key_done.html:9
 #: templates/allauth/layouts/base.html:37
 msgid "Change Password"
-msgstr "Canviar Contrasenya"
+msgstr "Canvia la contrasenya"
 
 #: templates/account/password_change.html:22
 msgid "Forgot Password?"
@@ -1209,7 +1209,7 @@ msgstr ""
 
 #: templates/account/password_reset.html:26
 msgid "Reset My Password"
-msgstr "Restablir la meva contrasenya"
+msgstr "Restableix la meva contrasenya"
 
 #: templates/account/password_reset.html:31
 msgid "Please contact us if you have any trouble resetting your password."
@@ -1247,11 +1247,11 @@ msgstr "La vostra contrasenya ha canviat."
 #: templates/account/password_set.html:5 templates/account/password_set.html:9
 #: templates/account/password_set.html:21
 msgid "Set Password"
-msgstr "Establir contrasenya"
+msgstr "Estableix la contrasenya"
 
 #: templates/account/phone_change.html:5 templates/account/phone_change.html:9
 msgid "Change Phone"
-msgstr "Canviar telèfon"
+msgstr "Canvia el telèfon"
 
 #: templates/account/phone_change.html:18
 msgid "Current phone"
@@ -1264,7 +1264,7 @@ msgstr "El vostre número de telèfon encara està pendent de verificació."
 #: templates/account/phone_change.html:38
 msgctxt "action"
 msgid "Change Phone"
-msgstr "Canviar telèfon"
+msgstr "Canvia el telèfon"
 
 #: templates/account/reauthenticate.html:6
 msgid "Enter your password:"
@@ -1276,7 +1276,7 @@ msgstr "Rebreu un codi especial per iniciar sessió sense contrasenya."
 
 #: templates/account/request_login_code.html:23
 msgid "Request Code"
-msgstr "Sol·licitar codi"
+msgstr "Sol·licita el codi"
 
 #: templates/account/request_login_code.html:28
 msgid "Other sign-in options"
@@ -1285,14 +1285,14 @@ msgstr "Opcions alternatives d'inici de sessió"
 #: templates/account/signup.html:4 templates/account/signup_by_passkey.html:4
 #: templates/socialaccount/signup.html:5
 msgid "Signup"
-msgstr "Registrar-se"
+msgstr "Registra't"
 
 #: templates/account/signup.html:8 templates/account/signup.html:30
 #: templates/account/signup_by_passkey.html:29
 #: templates/allauth/layouts/base.html:74 templates/socialaccount/signup.html:9
 #: templates/socialaccount/signup.html:25
 msgid "Sign Up"
-msgstr "Registrar-se"
+msgstr "Registra't"
 
 #: templates/account/signup.html:17 templates/account/signup_by_passkey.html:17
 #, python-format
@@ -1305,7 +1305,7 @@ msgstr "Registra't amb un clau d'accés"
 
 #: templates/account/signup_by_passkey.html:8
 msgid "Passkey Sign Up"
-msgstr "Registrar clau d'accés"
+msgstr "Registra't amb una clau d'accés"
 
 #: templates/account/signup_by_passkey.html:36
 msgid "Other options"
@@ -1426,7 +1426,7 @@ msgstr "Sessions"
 #: templates/idp/oidc/device_authorization_confirmed.html:5
 #: templates/idp/oidc/device_authorization_denied.html:5
 msgid "Authorize"
-msgstr "Autoritzar"
+msgstr "Autoritza"
 
 #: templates/idp/oidc/authorization_form.html:12
 #, python-format
@@ -1445,7 +1445,7 @@ msgstr "Introduïu el codi que es mostra al vostre dispositiu."
 #: templates/socialaccount/login.html:27
 #: templates/socialaccount/login_redirect.html:10
 msgid "Continue"
-msgstr "Continuar"
+msgstr "Continua"
 
 #: templates/idp/oidc/device_authorization_confirm_form.html:9
 msgid "Confirm Device"
@@ -1489,7 +1489,7 @@ msgstr "Error"
 
 #: templates/idp/oidc/logout.html:24
 msgid "Stay Signed In"
-msgstr "Mantenir la sessió iniciada"
+msgstr "Mantén la sessió iniciada"
 
 #: templates/mfa/authenticate.html:13
 msgid ""
@@ -1558,11 +1558,11 @@ msgstr "L’app d’autenticació no està activa."
 
 #: templates/mfa/index.html:32 templates/mfa/totp/deactivate_form.html:24
 msgid "Deactivate"
-msgstr "Desactivat"
+msgstr "Desactiva"
 
 #: templates/mfa/index.html:36 templates/mfa/totp/activate_form.html:32
 msgid "Activate"
-msgstr "Activat"
+msgstr "Activa"
 
 #: templates/mfa/index.html:45 templates/mfa/webauthn/authenticator_list.html:8
 #: templates/mfa/webauthn/base.html:4
@@ -1583,12 +1583,12 @@ msgstr "No s'ha afegit cap clau de seguretat."
 
 #: templates/mfa/index.html:62
 msgid "Manage"
-msgstr "Gestionar"
+msgstr "Gestiona"
 
 #: templates/mfa/index.html:67 templates/mfa/webauthn/add_form.html:18
 #: templates/mfa/webauthn/authenticator_list.html:70
 msgid "Add"
-msgstr "Afegir"
+msgstr "Afegeix"
 
 #: templates/mfa/index.html:77 templates/mfa/recovery_codes/base.html:4
 #: templates/mfa/recovery_codes/generate.html:6
@@ -1621,7 +1621,7 @@ msgstr "Descarrega"
 
 #: templates/mfa/index.html:110 templates/mfa/recovery_codes/generate.html:29
 msgid "Generate"
-msgstr "Generar"
+msgstr "Genera"
 
 #: templates/mfa/messages/recovery_codes_generated.txt:2
 msgid "A new set of recovery codes has been generated."
@@ -1736,11 +1736,11 @@ msgstr "No confiar"
 
 #: templates/mfa/webauthn/add_form.html:7
 msgid "Add Security Key"
-msgstr "Afegir clau de seguretat"
+msgstr "Afegeix la clau de seguretat"
 
 #: templates/mfa/webauthn/authenticator_confirm_delete.html:6
 msgid "Remove Security Key"
-msgstr "Eliminar clau de seguretat"
+msgstr "Elimina la clau de seguretat"
 
 #: templates/mfa/webauthn/authenticator_confirm_delete.html:9
 msgid "Are you sure you want to remove this security key?"
@@ -1778,19 +1778,19 @@ msgstr "Últim ús %(last_used)s"
 
 #: templates/mfa/webauthn/authenticator_list.html:56
 msgid "Edit"
-msgstr "Editar"
+msgstr "Edita"
 
 #: templates/mfa/webauthn/edit_form.html:7
 msgid "Edit Security Key"
-msgstr "Editar clau de seguretat"
+msgstr "Edita la clau de seguretat"
 
 #: templates/mfa/webauthn/edit_form.html:18
 msgid "Save"
-msgstr "Desar"
+msgstr "Desa"
 
 #: templates/mfa/webauthn/signup_form.html:7
 msgid "Create Passkey"
-msgstr "Crear clau d'accés"
+msgstr "Crea la clau d'accés"
 
 #: templates/mfa/webauthn/signup_form.html:10
 msgid ""
@@ -1804,7 +1804,7 @@ msgstr ""
 
 #: templates/mfa/webauthn/signup_form.html:21
 msgid "Create"
-msgstr "Crear"
+msgstr "Crea"
 
 #: templates/mfa/webauthn/snippets/scripts.html:2
 msgid "This functionality requires JavaScript."
@@ -1834,7 +1834,7 @@ msgstr "Actualment no tens cap compte de tercers associat a aquest compte."
 
 #: templates/socialaccount/connections.html:50
 msgid "Add a Third-Party Account"
-msgstr "Afegir un compte de tercers"
+msgstr "Afegeix un compte de tercers"
 
 #: templates/socialaccount/email/account_connected_message.txt:4
 #, python-format
@@ -1862,7 +1862,7 @@ msgstr "Compte de tercers desvinculat"
 #: templates/socialaccount/login.html:10
 #, python-format
 msgid "Connect %(provider)s"
-msgstr "Connectar %(provider)s"
+msgstr "Connecta %(provider)s"
 
 #: templates/socialaccount/login.html:13
 #, python-format
@@ -1872,7 +1872,7 @@ msgstr "Esteu a punt de connectar un nou compte extern des de %(provider)s."
 #: templates/socialaccount/login.html:17
 #, python-format
 msgid "Sign In Via %(provider)s"
-msgstr "Iniciar sessió via %(provider)s"
+msgstr "Inicia la sessió via %(provider)s"
 
 #: templates/socialaccount/login.html:20
 #, python-format

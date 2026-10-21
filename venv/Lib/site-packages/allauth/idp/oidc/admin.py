@@ -23,6 +23,7 @@ class ClientAdmin(admin.ModelAdmin):
     )
     readonly_fields = ("secret", "created_at")
     list_filter = ("type", "skip_consent", "allow_uri_wildcards")
+    search_fields = ("id", "name")
 
     def save_model(self, request: HttpRequest, obj, form, change) -> None:
         if not change:
